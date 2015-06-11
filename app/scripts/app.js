@@ -125,11 +125,40 @@ angular
           }
         }
     })
+
+      .state('dashboard.measureTask',{
+        templateUrl:'views/measure-task.html',
+        url:'/measure-task?appId&taskId',        
+        controller:'MeasureTaskCtrl',
+        resolve: {
+          loadMyFile:function($ocLazyLoad) {
+            return $ocLazyLoad.load({
+              name:'chart.js',
+              files:[
+                'bower_components/angular-chart.js/dist/angular-chart.min.js',
+                'bower_components/angular-chart.js/dist/angular-chart.css'
+              ]
+            }),
+            $ocLazyLoad.load({
+                name:'sbAdminApp',
+                files:['scripts/controllers/measureTaskCtrl.js']
+            })
+          }
+        }
+
+        // controller: function($scope, $stateParams) {
+        //   $scope.appId = $stateParams.appId;
+        //   $scope.taskId = $stateParams.taskId;
+        // }
+    })      
+
+
+
       .state('dashboard.table',{
         templateUrl:'views/table.html',
         url:'/table'
     })
-      .state('dashboard.panels-wells',{
+      .state('dashboard.panels-wells',{ 
           templateUrl:'views/ui-elements/panels-wells.html',
           url:'/panels-wells'
       })
