@@ -128,7 +128,7 @@ angular
 
       .state('dashboard.measureTask',{
         templateUrl:'views/measure-task.html',
-        url:'/measure-task?appId&taskId',        
+        url:'/measure-task?application&task',        
         controller:'MeasureTaskCtrl',
         resolve: {
           loadMyFile:function($ocLazyLoad) {

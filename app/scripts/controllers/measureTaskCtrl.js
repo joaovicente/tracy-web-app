@@ -8,6 +8,6 @@
  */
 angular.module('sbAdminApp')
   .controller('MeasureTaskCtrl', ['$scope', '$stateParams', '$timeout' , function ($scope, $stateParams, $timeout) {
-    $scope.appId = $stateParams.appId;
-    $scope.taskId = $stateParams.taskId;
+    $scope.application = $stateParams.application;
+    $scope.task = $stateParams.task;
 }]);
