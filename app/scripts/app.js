@@ -12,7 +12,7 @@ angular
     'oc.lazyLoad',
     'ui.router',
     'ui.bootstrap',
-    'angular-loading-bar',
+    'angular-loading-bar'//,
   ])
   .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider) {
     
@@ -132,24 +132,21 @@ angular
         controller:'MeasureTaskCtrl',
         resolve: {
           loadMyFile:function($ocLazyLoad) {
+            // return $ocLazyLoad.load({
+            //   name:'chart.js',
+            //   files:[
+            //     'bower_components/angular-chart.js/dist/angular-chart.min.js',
+            //     'bower_components/angular-chart.js/dist/angular-chart.css'
+            //   ]
+            // }),
             return $ocLazyLoad.load({
-              name:'chart.js',
-              files:[
-                'bower_components/angular-chart.js/dist/angular-chart.min.js',
-                'bower_components/angular-chart.js/dist/angular-chart.css'
-              ]
-            }),
-            $ocLazyLoad.load({
                 name:'sbAdminApp',
-                files:['scripts/controllers/measureTaskCtrl.js']
+                files:[
+                'scripts/controllers/measureTaskCtrl.js',
+                'scripts/services/tracyWebServices.js']
             })
           }
         }
-
-        // controller: function($scope, $stateParams) {
-        //   $scope.appId = $stateParams.appId;
-        //   $scope.taskId = $stateParams.taskId;
-        // }
     })      
 
 
