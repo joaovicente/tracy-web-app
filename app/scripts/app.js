@@ -142,8 +142,10 @@ angular
             return $ocLazyLoad.load({
                 name:'sbAdminApp',
                 files:[
+                'bower_components/highcharts-ng/dist/highcharts-ng.js',
                 'scripts/controllers/measureTaskCtrl.js',
-                'scripts/services/tracyWebServices.js']
+                'scripts/services/tracyWebServices.js',
+                'scripts/services/tracyChartService.js']
             })
           }
         }
