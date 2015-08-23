@@ -3,7 +3,7 @@
 
 var tracyChartService = 
  angular.module('tracyChartService', ['highcharts-ng']);
-this.singleTaskDapdexTimechart =             
+this.singleTaskApdexTimechart =             
         {
             options: {
                 chart: {
@@ -11,7 +11,7 @@ this.singleTaskDapdexTimechart =
                 }
             },
             title: {
-                text: 'DAPDEX'
+                text: 'APDEX'
             },
             subtitle: {
                 text: 'Application/Task'
@@ -26,7 +26,7 @@ this.singleTaskDapdexTimechart =
             },
             yAxis: {
                 title: {
-                    text: 'DAPDEX'
+                    text: 'APDEX'
                 },
                 min: 0,
                 max: 1,
@@ -87,7 +87,7 @@ this.singleTaskDapdexTimechart =
                 }]
             },
             series: [{
-                name: 'DAPDEX',
+                name: 'APDEX',
                 type: 'spline',
                 data: [
                     [1429975020000, 0.99],
@@ -334,8 +334,8 @@ this.singleTaskHistogramTemplate =
 
 tracyChartService.factory('tracyCharts', function(){
     return {
-        getSingleTaskDapdexTimechart: function(application, task){
-            return singleTaskDapdexTimechart;
+        getSingleTaskApdexTimechart: function(application, task){
+            return singleTaskApdexTimechart;
         },
 
         getSingleTaskVitalsTimechart: function(application, task){
