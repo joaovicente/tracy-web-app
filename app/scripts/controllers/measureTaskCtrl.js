@@ -61,8 +61,10 @@ var chartConfig = {
 
     $scope.application = $stateParams.application;
     $scope.task = $stateParams.task;
-    // $scope.singleTaskDapdexTimechart = chartConfig;
     $scope.singleTaskDapdexTimechart = tracyCharts.getSingleTaskDapdexTimechart($scope.application, $scope.task);
+    $scope.singleTaskVitalsTimechart = tracyCharts.getSingleTaskVitalsTimechart($scope.application, $scope.task);
+    $scope.latencyHistogram = tracyCharts.getLatencyHistogram($scope.application, $scope.task);
+
     console.log($scope.singleTaskDapdexTimechart);
 
     	    TaskMeasurement.get({application: "myApp", task: "myTask"},
