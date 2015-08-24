@@ -11,11 +11,12 @@ this.singleTaskApdexTimechart =
                 }
             },
             title: {
-                text: 'APDEX'
+                // text: 'APDEX'
+                text: ''
             },
-            subtitle: {
-                text: 'Application/Task'
-            },
+            // subtitle: {
+            //     text: 'Application/Task'
+            // },
 
 
             xAxis: {
@@ -121,11 +122,12 @@ this.singleTaskVitalsTemplate =
                 }
             },
             title: {
-                text: 'Vitals'
+                text: ''
+                // text: 'Vitals'
             },
-            subtitle: {
-                text: 'Application/Task'
-            },
+            // subtitle: {
+            //     text: 'Application/Task'
+            // },
                     xAxis: {
                 type: 'datetime',
                 title: {
@@ -271,11 +273,12 @@ this.singleTaskHistogramTemplate =
                 }
             },
             title: {
-                text: 'Latency histogram'
+                text: ''
+                // text: 'Latency histogram'
             },
-            subtitle: {
-                text: 'Application/Task'
-            },
+            // subtitle: {
+            //     text: 'Application/Task'
+            // },
             xAxis: {
                 categories: [
                     '>640', 
