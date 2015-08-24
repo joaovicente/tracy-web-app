@@ -3,7 +3,9 @@
 
 var tracyChartService = 
  angular.module('tracyChartService', ['highcharts-ng']);
-this.singleTaskApdexTimechart =             
+
+
+var singleTaskApdexTimechart =             
         {
             options: {
                 chart: {
@@ -17,8 +19,6 @@ this.singleTaskApdexTimechart =
             // subtitle: {
             //     text: 'Application/Task'
             // },
-
-
             xAxis: {
                 type: 'datetime',
                 title: {
@@ -91,27 +91,30 @@ this.singleTaskApdexTimechart =
                 name: 'APDEX',
                 type: 'spline',
                 data: [
-                    [1429975020000, 0.99],
-                    [1429975080000, 0.98],
-                    [1429975140000, 0.99],
-                    [1429975200000, 0.93],
-                    [1429975260000, 0.94],
-                    [1429975320000, 0.97],
-                    [1429975380000, 0.95],
-                    [1429975440000, 0.97],
-                    [1429975500000, 0.83],
-                    [1429975560000, 0.93],
-                    [1429975620000, 0.97],
-                    [1429975680000, 0.94],
-                    [1429975740000, 0.96],
-                    [1429975800000, 0.98],
-                    [1429975860000, 0.95],
-                    [1429975920000, 0.96]
+                    // [1429975020000, 0.96],
+                    // [1429975080000, 0.95],
+                    // [1429975140000, 0.94],
+                    // [1429975200000, 0.93],
+                    // [1429975260000, 0.94],
+                    // [1429975320000, 0.97],
+                    // [1429975380000, 0.95],
+                    // [1429975440000, 0.97],
+                    // [1429975500000, 0.83],
+                    // [1429975560000, 0.93],
+                    // [1429975620000, 0.97],
+                    // [1429975680000, 0.94],
+                    // [1429975740000, 0.96],
+                    // [1429975800000, 0.98],
+                    // [1429975860000, 0.95],
+                    // [1429975920000, 0.96]
                 ]
             }],
-            loading: false
+            loading: false,
+            credits: {
+                enabled: false
+            }
         };
-this.singleTaskVitalsTemplate = 
+var singleTaskVitalsTemplate = 
         {
             options: {
                 chart: {
@@ -258,9 +261,12 @@ this.singleTaskVitalsTemplate =
                     [1429975860000, 116   ],
                     [1429975920000, 145   ]
                     ],
-            }]    
+            }],
+            credits: {
+                enabled: false
+            }
         };
-this.singleTaskHistogramTemplate = 
+var singleTaskHistogramTemplate = 
        {
             options : { 
                 chart: {
@@ -337,7 +343,14 @@ this.singleTaskHistogramTemplate =
 
 tracyChartService.factory('tracyCharts', function(){
     return {
-        getSingleTaskApdexTimechart: function(application, task){
+        getSingleTaskApdexTimechart: function(application, task, chartData){
+            var i = 0, newData = [];
+			for (i = 0; i < chartData.timeSequence.length; i++) {
+				if (null != chartData.dapdexScores[i])	{
+	            	newData.push([chartData.timeSequence[i], chartData.dapdexScores[i]]);
+	        	}
+			}
+			singleTaskApdexTimechart.series[0].data = newData;
             return singleTaskApdexTimechart;
         },
 
