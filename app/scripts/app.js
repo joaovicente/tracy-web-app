@@ -14,8 +14,12 @@ angular
     'ui.bootstrap',
     'angular-loading-bar'//,
   ])
-  .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider) {
-    
+  .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider', '$httpProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider,$httpProvider) {
+
+    // Allow Cross-Origin Resource Sharing (CORS)
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];  
+
     $ocLazyLoadProvider.config({
       debug:false,
       events:true,
