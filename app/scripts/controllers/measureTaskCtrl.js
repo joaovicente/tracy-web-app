@@ -17,15 +17,15 @@ angular.module('sbAdminApp', ['highcharts-ng', 'tracyWebServices', 'tracyChartSe
     TaskMeasurement.get({application: "myApp", task: "myTask"},
 		function success(response) {
 		    $scope.measurement = response;
-		    // console.log($scope.measurement.dapdexTimechart);
+		    console.log($scope.measurement);
 		    // console.log("Success:" + JSON.stringify(response));
+
 		    $scope.singleTaskApdexTimechart 
-    			= tracyCharts.getSingleTaskApdexTimechart(
-    				$scope.application, 
-    				$scope.task, 
-    				$scope.measurement.dapdexTimechart);
-    		$scope.singleTaskVitalsTimechart = tracyCharts.getSingleTaskVitalsTimechart($scope.application, $scope.task);
-    		$scope.latencyHistogram = tracyCharts.getLatencyHistogram($scope.application, $scope.task);
+    			= tracyCharts.getSingleTaskApdexTimechart($scope.application, $scope.task, $scope.measurement.dapdexTimechart);
+    		$scope.singleTaskVitalsTimechart = 
+    			tracyCharts.getSingleTaskVitalsTimechart($scope.application, $scope.task, $scope.measurement.vitalsTimechart);
+    		$scope.latencyHistogram = 
+    			tracyCharts.getLatencyHistogram($scope.application, $scope.task, $scope.measurement.latencyHistogram);
 		},
 		function error(errorResponse) {
 		    console.log("Error:" + JSON.stringify(errorResponse));

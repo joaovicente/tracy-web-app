@@ -354,11 +354,26 @@ tracyChartService.factory('tracyCharts', function(){
             return singleTaskApdexTimechart;
         },
 
-        getSingleTaskVitalsTimechart: function(application, task){
+        getSingleTaskVitalsTimechart: function(application, task, chartData){
+            var i = 0, countData = [], errorCountData = [], p95Data = [];
+			for (i = 0; i < chartData.timeSequence.length; i++) {
+				if (null != chartData.count[i])	{
+	            	countData.push([chartData.timeSequence[i], chartData.count[i]]);
+	        	}
+				if (null != chartData.count[i])	{
+	            	errorCountData.push([chartData.timeSequence[i], chartData.errors[i]]);
+	        	}
+				if (null != chartData.count[i])	{
+	            	p95Data.push([chartData.timeSequence[i], chartData.p95[i]]);
+	        	}
+			}
+			singleTaskVitalsTemplate.series[0].data = countData;
+			singleTaskVitalsTemplate.series[1].data = errorCountData;
+			singleTaskVitalsTemplate.series[2].data = p95Data;
             return singleTaskVitalsTemplate;
         },
 
-        getLatencyHistogram: function(application, task){
+        getLatencyHistogram: function(application, task, chartData){
             return singleTaskHistogramTemplate;
         }  
     }               
