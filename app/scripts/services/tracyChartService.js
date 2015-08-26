@@ -356,7 +356,7 @@ tracyChartService.factory('tracyCharts', function(){
         },
 
         getSingleTaskVitalsTimechart: function(application, task, chartData){
-        	console.log(chartData);
+        	// console.log(chartData);
             var i = 0, countData = [], errorCountData = [], p95Data = [];
 			for (i = 0; i < chartData.timeSequence.length; i++) {
 				if (null != chartData.count[i])	{
@@ -372,8 +372,8 @@ tracyChartService.factory('tracyCharts', function(){
 			singleTaskVitalsTemplate.series[0].data = countData;
 			singleTaskVitalsTemplate.series[1].data = errorCountData;
 			singleTaskVitalsTemplate.series[2].data = p95Data;
-			console.log(singleTaskVitalsTemplate);
-			console.log(JSON.stringify(singleTaskVitalsTemplate));
+			// console.log(singleTaskVitalsTemplate);
+			// console.log(JSON.stringify(singleTaskVitalsTemplate));
             return singleTaskVitalsTemplate;
         },
 
@@ -402,13 +402,10 @@ tracyChartService.factory('tracyCharts', function(){
 	            	countAndColourData.push(countAndColor);
 	        	}
 			}
-			// console.log(JSON.stringify(binsData));
 			singleTaskHistogramTemplate.xAxis.categories = binsData;
-			// console.log(JSON.stringify(singleTaskHistogramTemplate.xAxis.categories));
-			// console.log(JSON.stringify(singleTaskHistogramTemplate));
 			singleTaskHistogramTemplate.series[0].data = countAndColourData;
 			// console.log(singleTaskHistogramTemplate);
-			console.log(JSON.stringify(singleTaskHistogramTemplate));
+			// console.log(JSON.stringify(singleTaskHistogramTemplate));
             return singleTaskHistogramTemplate;
         }  
     }               

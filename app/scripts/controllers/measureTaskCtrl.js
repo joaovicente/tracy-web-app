@@ -17,7 +17,7 @@ angular.module('sbAdminApp', ['highcharts-ng', 'tracyWebServices', 'tracyChartSe
     TaskMeasurement.get({application: "myApp", task: "myTask"},
 		function success(response) {
 		    $scope.measurement = response;
-		    console.log($scope.measurement);
+		    // console.log($scope.measurement);
 		    // console.log("Success:" + JSON.stringify(response));
 
 		    $scope.singleTaskApdexTimechart 
