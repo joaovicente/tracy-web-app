@@ -300,7 +300,7 @@ var singleTaskHistogramTemplate =
                     '0-40'
                 ],
                 title: {
-                    text: 'latency range (ms)',
+                    text: 'latency range [ms]',
                 }
             },
             yAxis: {
@@ -351,29 +351,64 @@ tracyChartService.factory('tracyCharts', function(){
 	        	}
 			}
 			singleTaskApdexTimechart.series[0].data = newData;
+			// console.log(singleTaskApdexTimechart);
             return singleTaskApdexTimechart;
         },
 
         getSingleTaskVitalsTimechart: function(application, task, chartData){
+        	console.log(chartData);
             var i = 0, countData = [], errorCountData = [], p95Data = [];
 			for (i = 0; i < chartData.timeSequence.length; i++) {
 				if (null != chartData.count[i])	{
 	            	countData.push([chartData.timeSequence[i], chartData.count[i]]);
 	        	}
-				if (null != chartData.count[i])	{
+				if (null != chartData.errors[i])	{
 	            	errorCountData.push([chartData.timeSequence[i], chartData.errors[i]]);
 	        	}
-				if (null != chartData.count[i])	{
+				if (null != chartData.p95[i])	{
 	            	p95Data.push([chartData.timeSequence[i], chartData.p95[i]]);
 	        	}
 			}
 			singleTaskVitalsTemplate.series[0].data = countData;
 			singleTaskVitalsTemplate.series[1].data = errorCountData;
 			singleTaskVitalsTemplate.series[2].data = p95Data;
+			console.log(singleTaskVitalsTemplate);
+			console.log(JSON.stringify(singleTaskVitalsTemplate));
             return singleTaskVitalsTemplate;
         },
 
         getLatencyHistogram: function(application, task, chartData){
+            var i = 0, binsData = [], countAndColourData = [];
+			for (i = 0; i < chartData.bins.length; i++) {
+				var countAndColor = {};
+				if (null != chartData.bins[i])	{
+					// singleTaskHistogramTemplate.xAxis.categories should look like ['>1200', '1000-1200' ...]
+	            	binsData.push(chartData.bins[i]);
+					// console.log(JSON.stringify(singleTaskHistogramTemplate));
+	        	}
+				if (null != chartData.count[i] && null != chartData.rttZone[i])	{
+					// singleTaskHistogramTemplate.series[0].data should look like:
+					// [{y: 3, color: '#C92524'}, {y: 9, color: '#D0FEC0'}, {y: 10, color: '#228B22'}]
+					countAndColor.y = chartData.count[i];
+					if (chartData.rttZone[i] == "Frustrated") {
+						countAndColor.color = '#C92524';
+					} else if (chartData.rttZone[i] == "Tolerating") {
+						countAndColor.color = '#D0FEC0';
+					} else if (chartData.rttZone[i] == "Satisfied") {
+						countAndColor.color = '#228B22';
+					} else {
+						console.log("Unexpected Performance Zone")
+					}
+	            	countAndColourData.push(countAndColor);
+	        	}
+			}
+			// console.log(JSON.stringify(binsData));
+			singleTaskHistogramTemplate.xAxis.categories = binsData;
+			// console.log(JSON.stringify(singleTaskHistogramTemplate.xAxis.categories));
+			// console.log(JSON.stringify(singleTaskHistogramTemplate));
+			singleTaskHistogramTemplate.series[0].data = countAndColourData;
+			// console.log(singleTaskHistogramTemplate);
+			console.log(JSON.stringify(singleTaskHistogramTemplate));
             return singleTaskHistogramTemplate;
         }  
     }               
