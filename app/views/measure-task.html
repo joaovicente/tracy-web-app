@@ -4,34 +4,36 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
-<div class="row">
-    <div class="col-lg-12 col-sm-12" id="line-chart" ng-controller="MeasureTaskCtrl">
-        <div class="panel panel-default">
-            <div class="panel-heading">APDEX timechart</div>
-            <div class="panel-body">
-                <highchart id="chart1" config="singleTaskApdexTimechart"></highchart>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-12 col-sm-12" id="bar-chart" ng-controller="MeasureTaskCtrl">
-        <div class="panel panel-default">
-            <div class="panel-heading">Vitals timechart</div>
-            <div class="panel-body">
-                <highchart id="chart2" config="singleTaskVitalsTimechart"></highchart>
-            </div>
+<div  ng-controller="MeasureTaskCtrl">
+	<div class="row">
+	    <div class="col-lg-12 col-sm-12" id="line-chart">
+	        <div class="panel panel-default">
+	            <div class="panel-heading">APDEX timechart</div>
+	            <div class="panel-body">
+	                <highchart id="chart1" config="singleTaskApdexTimechart"></highchart>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<div class="row">
+	    <div class="col-lg-12 col-sm-12" id="bar-chart">
+	        <div class="panel panel-default">
+	            <div class="panel-heading">Vitals timechart</div>
+	            <div class="panel-body">
+	                <highchart id="chart2" config="singleTaskVitalsTimechart"></highchart>
+	            </div>
 
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-12 col-sm-12" id="doughnut-chart" ng-controller="ChartCtrl">
-        <div class="panel panel-default">
-            <div class="panel-heading">Latency histogram</div>
-            <div class="panel-body">
-                <highchart id="chart3" config="latencyHistogram"></highchart>
-            </div>
-        </div>
-    </div>
-</div>
+	        </div>
+	    </div>
+	</div>
+	<div class="row">
+	    <div class="col-lg-12 col-sm-12" id="doughnut-chart">
+	        <div class="panel panel-default">
+	            <div class="panel-heading">Latency histogram</div>
+	            <div class="panel-body">
+	                <highchart id="chart3" config="latencyHistogram"></highchart>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+<div/>
