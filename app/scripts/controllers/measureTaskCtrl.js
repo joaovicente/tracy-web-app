@@ -15,7 +15,7 @@ angular.module('sbAdminApp', ['highcharts-ng', 'tracyWebServices', 'tracyChartSe
 	    $scope.refreshMsecPeriod = 10000;
 
 	    $scope.getChartData = function () {
-		    	TaskMeasurement.get({application: "myApp", task: "myTask"},
+		    	TaskMeasurement.get({application: $scope.application, task: $scope.task},
 				function success(response) {
 				    $scope.measurement = response;
 				    // console.log($scope.measurement);
