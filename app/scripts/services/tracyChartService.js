@@ -346,8 +346,8 @@ tracyChartService.factory('tracyCharts', function(){
         getSingleTaskApdexTimechart: function(application, task, chartData){
             var i = 0, newData = [];
 			for (i = 0; i < chartData.timeSequence.length; i++) {
-				if (null != chartData.dapdexScores[i])	{
-	            	newData.push([chartData.timeSequence[i], chartData.dapdexScores[i]]);
+				if (null != chartData.apdexScores[i])	{
+	            	newData.push([chartData.timeSequence[i], chartData.apdexScores[i]]);
 	        	}
 			}
 			singleTaskApdexTimechart.series[0].data = newData;

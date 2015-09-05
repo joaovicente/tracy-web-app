@@ -6,7 +6,7 @@ var tracyWebServices =
  
 tracyWebServices.factory('TaskMeasurement', ['$resource',
 function($resource) {
-return $resource("http://localhost:8080/rest/tws/v1/applications/:application/tasks/:task/measurement", {}, {
+return $resource("http://localhost:8080/tws/v1/applications/:application/tasks/:task/measurement", {}, {
 // return $resource("http://localhost:8080/rest/user/123", {}, {
   get: {method: 'GET', cache: false, isArray: false},	
   query: {method:'GET', isArray:true},

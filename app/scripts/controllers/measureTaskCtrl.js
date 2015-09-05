@@ -23,7 +23,7 @@ angular.module('sbAdminApp', ['highcharts-ng', 'tracyWebServices', 'tracyChartSe
 				    console.log("GET /measurement")
 
 				    $scope.singleTaskApdexTimechart 
-		    			= tracyCharts.getSingleTaskApdexTimechart($scope.application, $scope.task, $scope.measurement.dapdexTimechart);
+		    			= tracyCharts.getSingleTaskApdexTimechart($scope.application, $scope.task, $scope.measurement.singleApdexTimechart);
 		    		$scope.singleTaskVitalsTimechart = 
 		    			tracyCharts.getSingleTaskVitalsTimechart($scope.application, $scope.task, $scope.measurement.vitalsTimechart);
 		    		$scope.latencyHistogram = 

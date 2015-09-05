@@ -44,62 +44,43 @@
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level" collapse="collapseVar!=2">
                     <li ng-init="third=!third" ng-class="{active: multiCollapseVar==3}">
-                        <a ui-sref="dashboard.chart" ng-click="multiCheck(3)">App 1 <span class="fa arrow"></span></a>
+                        <a ui-sref="dashboard.chart" ng-click="multiCheck(3)">App A<span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level" collapse="multiCollapseVar!=3">
                             <li>
-                                <a ui-sref="dashboard.measureTask({ application: 'App1', task: 'Task 1A' })">Task 1A</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'App A', task: 'Task A1' })">Task A1</a>
                             </li>
                         </ul>
                     </li>
                     <li ng-init="third=!third" ng-class="{active: multiCollapseVar==4}">
-                        <a ui-sref="dashboard.chart" ng-click="multiCheck(4)">App 2 <span class="fa arrow"></span></a>
+                        <a ui-sref="dashboard.chart" ng-click="multiCheck(4)">App B <span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level" collapse="multiCollapseVar!=4">
                             <li>
-                                <a ui-sref="dashboard.form">Task 2A</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'App B', task: 'Task B1' })">Task B1</a>
+                            </li>
+                            <li>
+                                <a ui-sref="dashboard.measureTask({ application: 'App B', task: 'Task B2' })">Task B2</a>
                             </li>
                         </ul>
                     </li>
                     <li ng-init="third=!third" ng-class="{active: multiCollapseVar==5}">
-                        <a ui-sref="dashboard.home" ng-click="multiCheck(5)">App 3 <span class="fa arrow"></span></a>
+                        <a ui-sref="dashboard.home" ng-click="multiCheck(5)">App C <span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level" collapse="multiCollapseVar!=5">
                             <li>
-                                <a ui-sref="dashboard.table">Task 3A</a>
-                            </li>
-                            <li>
-                                <a ui-sref="dashboard.form">Task 3B</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'App C', task: 'Task C1' })">Task C1</a>
                             </li>
                         </ul>
                     </li>
                     <li ng-init="third=!third" ng-class="{active: multiCollapseVar==6}">
-                        <a ui-sref="dashboard.home" ng-click="multiCheck(6)">App4 <span class="fa arrow"></span></a>
+                        <a ui-sref="dashboard.home" ng-click="multiCheck(6)">Demo <span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level" collapse="multiCollapseVar!=6">
                             <li>
-                                <a ui-sref="dashboard.table">Task 4A</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'Demo App', task: 'Not-so-fast' })">Not so fast</a>
                             </li>
                             <li>
-                                <a ui-sref="dashboard.table">Task 4B</a>
-                            </li>
-                            <li>
-                                <a ui-sref="dashboard.form">Task 4C</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'Demo App', task: 'Static' })">Static</a>
                             </li>
                         </ul>
                     </li>
-                    <li ng-init="third=!third" ng-class="{active: multiCollapseVar==7}">
-                        <a ui-sref="dashboard.home" ng-click="multiCheck(7)">App5 <span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level" collapse="multiCollapseVar!=7">
-                            <li>
-                                <a ui-sref="dashboard.table">Task 5A </a>
-                            </li>
-                            <li>
-                                <a ui-sref="dashboard.form">Task 5B </a>
-                            </li>
-                            <li>
-                                <a ui-sref="dashboard.form">Task 5C </a>
-                            </li>
-
-                        </ul>
-                    </li>
-
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
