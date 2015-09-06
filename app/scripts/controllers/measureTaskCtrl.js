@@ -17,10 +17,10 @@ angular.module('sbAdminApp', ['highcharts-ng', 'tracyWebServices', 'tracyChartSe
 	    $scope.getChartData = function () {
 		    	TaskMeasurement.get({application: $scope.application, task: $scope.task},
 				function success(response) {
+				    // console.log("GET /measurement [" + $scope.application + "][" + $scope.task + "]");
 				    $scope.measurement = response;
 				    // console.log($scope.measurement);
 				    // console.log("Success:" + JSON.stringify(response));
-				    console.log("GET /measurement")
 
 				    $scope.singleTaskApdexTimechart 
 		    			= tracyCharts.getSingleTaskApdexTimechart($scope.application, $scope.task, $scope.measurement.singleApdexTimechart);
@@ -34,6 +34,12 @@ angular.module('sbAdminApp', ['highcharts-ng', 'tracyWebServices', 'tracyChartSe
 				}
 			);
 	    };
+	    // console.log("Created MeasureTaskCtrl: [" + $scope.application + "][" + $scope.task + "]");
 	    $scope.getChartData();
-	   	$interval(function(){ $scope.getChartData();}, $scope.refreshMsecPeriod);
+	    var measurementGetInterval = $interval(function(){ $scope.getChartData();}, $scope.refreshMsecPeriod);
+	    $scope.$on("$destroy", function() {
+		   		// console.log("Destroyed MeasureTaskCtrl: [" + $scope.application + "][" + $scope.task + "]");
+		   		$interval.cancel(measurementGetInterval);
+	    });
+
 }]);

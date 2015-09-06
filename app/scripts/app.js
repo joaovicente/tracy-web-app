@@ -136,16 +136,8 @@ angular
       .state('dashboard.measureTask',{
         templateUrl:'views/measure-task.html',
         url:'/measure-task?application&task',        
-        controller:'MeasureTaskCtrl',
         resolve: {
           loadMyFile:function($ocLazyLoad) {
-            // return $ocLazyLoad.load({
-            //   name:'chart.js',
-            //   files:[
-            //     'bower_components/angular-chart.js/dist/angular-chart.min.js',
-            //     'bower_components/angular-chart.js/dist/angular-chart.css'
-            //   ]
-            // }),
             return $ocLazyLoad.load({
                 name:'sbAdminApp',
                 files:[
