@@ -21,6 +21,8 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
+  grunt.loadNpmTasks('grunt-war');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -361,7 +363,32 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
-    }
+    },
+    /*
+    * Build a WAR (web archive) without Maven or the JVM installed.
+    */
+    war: {
+      target: {
+          options: {
+            war_dist_folder: 'war',    /* Folder where to generate the WAR. */
+            war_name: 'tracy-web-app'                    /* The name fo the WAR file (.war will be the extension) */
+          },
+          files: [
+            {
+              expand: true,
+              cwd: './app',
+              src: ['**'],
+              dest: ''
+            },
+            {
+              expand: true,
+              cwd: './',
+              src: ['./bower_components/**'],
+              dest: ''
+            }
+          ]
+        }
+      }
   });
 
 
