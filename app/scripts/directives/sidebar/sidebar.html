@@ -44,29 +44,19 @@
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level" collapse="collapseVar!=2">
                     <li ng-init="third=!third" ng-class="{active: multiCollapseVar==3}">
-                        <a ui-sref="dashboard.chart" ng-click="multiCheck(3)">App A<span class="fa arrow"></span></a>
+                        <a ui-sref="dashboard.chart" ng-click="multiCheck(3)">App 1 <span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level" collapse="multiCollapseVar!=3">
                             <li>
                                 <a ui-sref="dashboard.measureTask({ application: 'App A', task: 'Task A1' })">Task A1</a>
                             </li>
-                        </ul>
-                    </li>
-                    <li ng-init="third=!third" ng-class="{active: multiCollapseVar==4}">
-                        <a ui-sref="dashboard.chart" ng-click="multiCheck(4)">App B <span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level" collapse="multiCollapseVar!=4">
                             <li>
-                                <a ui-sref="dashboard.measureTask({ application: 'App B', task: 'Task B1' })">Task B1</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'App A', task: 'Task A2' })">Task A2</a>
                             </li>
                             <li>
-                                <a ui-sref="dashboard.measureTask({ application: 'App B', task: 'Task B2' })">Task B2</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'App A', task: 'Task A3' })">Task A3</a>
                             </li>
-                        </ul>
-                    </li>
-                    <li ng-init="third=!third" ng-class="{active: multiCollapseVar==5}">
-                        <a ui-sref="dashboard.home" ng-click="multiCheck(5)">App C <span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level" collapse="multiCollapseVar!=5">
                             <li>
-                                <a ui-sref="dashboard.measureTask({ application: 'App C', task: 'Task C1' })">Task C1</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'App A', task: 'Task A4' })">Task A4</a>
                             </li>
                         </ul>
                     </li>
@@ -82,7 +72,6 @@
                         </ul>
                     </li>
                 </ul>
-                <!-- /.nav-second-level -->
             </li>
 <!--             <li ng-class="{active:collapseVar==4}">
                 <a href="" ng-click="check(4)"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span
