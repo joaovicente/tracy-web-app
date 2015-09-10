@@ -44,7 +44,7 @@
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level" collapse="collapseVar!=2">
                     <li ng-init="third=!third" ng-class="{active: multiCollapseVar==3}">
-                        <a ui-sref="dashboard.chart" ng-click="multiCheck(3)">App 1 <span class="fa arrow"></span></a>
+                        <a ng-click="multiCheck(3)">App 1 <span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level" collapse="multiCollapseVar!=3">
                             <li>
                                 <a ui-sref="dashboard.measureTask({ application: 'App A', task: 'Task A1' })">Task A1</a>
