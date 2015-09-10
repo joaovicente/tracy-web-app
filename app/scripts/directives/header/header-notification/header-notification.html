@@ -1,5 +1,5 @@
 <ul class="nav navbar-top-links navbar-right">
-<!--     <li class="dropdown">
+ <!--    <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
         </a>
@@ -182,8 +182,8 @@
                 </a>
             </li>
         </ul>
-    </li>
-    <li class="dropdown">
+    </li>--> 
+<!--     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
         </a>
@@ -198,5 +198,19 @@
             </li>
         </ul>
     </li>
- --></ul>
+ -->    <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+            </i>No environment <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+            <li><a href="#"></i> Env A</a>
+            </li>
+            <li><a href="#"></i> Env B</a>
+            </li>
+        </ul>
+    </li>
+    <li  ng-controller="HeaderNotificationCtrl">
+        <button style="margin-bottom: 0" type="button" class="btn btn-default" tooltip="All times in the APM dashboard refer to UTC to avoid ambiguity when sharing time related information between regions." tooltip-placement="bottom" class="btn btn-default"> {{clock.now}} </button>
+    </li>
+</ul>
 
