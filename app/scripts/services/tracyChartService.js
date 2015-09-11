@@ -112,9 +112,12 @@ var singleTaskApdexTimechart =
             loading: false,
             credits: {
                 enabled: false
-            }
-        };
-var singleTaskVitalsTemplate = 
+            },
+            size: {
+             height: 300
+         }
+     };
+     var singleTaskVitalsTemplate = 
         {
             options: {
                 chart: {
@@ -264,7 +267,10 @@ var singleTaskVitalsTemplate =
             }],
             credits: {
                 enabled: false
-            }
+            },
+            size: {
+             height: 300
+         }
         };
 var singleTaskHistogramTemplate = 
        {
@@ -338,7 +344,10 @@ var singleTaskHistogramTemplate =
                     {y: 30, color: '#228B22'},
                     {y: 2, color: '#228B22'}
                 ]
-            }]
+            }],
+            size: {
+             height: 300
+         }
         };
 
 tracyChartService.factory('tracyCharts', function(){
