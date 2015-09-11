@@ -30,6 +30,13 @@ body {
   border-top: 1px solid #e5e5e5;
 }
 
+.version {
+  font-size: 10px;
+  text-align: right;
+  margin-top: 30px;
+  margin-right: 30px;
+}
+
 /* Customize container */
 @media (min-width: 768px) {
   .container {

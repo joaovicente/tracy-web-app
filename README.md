@@ -12,7 +12,10 @@ The UI is constructed using the [SB Admin](https://github.com/start-angular/sb-a
 - `npm start` - a shortcut for `grunt serve`
 - `npm run dist` - a shortcut for `grunt serve:dist` to minify the files for deployment
 
-## Version history ##
+## Version history
 
-### 0.0.1 ###
+### 0.0.1
 * Initial version
+
+### 0.1.0-SNAPSHOT
+* DONE: Added version to the UI
