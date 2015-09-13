@@ -117,6 +117,7 @@ var singleTaskApdexTimechart =
              height: 300
          }
      };
+
      var singleTaskVitalsTemplate = 
         {
             options: {
@@ -168,7 +169,8 @@ var singleTaskApdexTimechart =
                     style: {
                         color: Highcharts.getOptions().colors[0]
                     }
-                }
+                },
+                min: 0
 
             }, { // Tertiary yAxis
                 gridLineWidth: 0,
@@ -184,7 +186,8 @@ var singleTaskApdexTimechart =
                         color: Highcharts.getOptions().colors[1]
                     }
                 },
-                opposite: true
+                opposite: true,
+                min: 0
             }],
             legend: {
                 layout: 'vertical',
@@ -346,7 +349,7 @@ var singleTaskHistogramTemplate =
                 ]
             }],
             size: {
-             height: 300
+             height: 400
          }
         };
 
