@@ -17,5 +17,7 @@ The UI is constructed using the [SB Admin](https://github.com/start-angular/sb-a
 ### 0.0.1
 * Initial version
 
-### 0.1.0-SNAPSHOT
-* DONE: Added version to the UI
+### 0.1.0
+* Added version to the UI
+* Changed Latency histogram height from 400px to 300px
+* Disallowed vitals chart from showing negative values in the Y axis
