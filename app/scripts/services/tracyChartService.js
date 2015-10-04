@@ -363,6 +363,7 @@ tracyChartService.factory('tracyCharts', function(){
 	        	}
 			}
 			singleTaskApdexTimechart.series[0].data = newData;
+            singleTaskApdexTimechart.series[0].name = 'APDEX [' + chartData.rttT + chartData.rttUnit + ']';
 			// console.log(singleTaskApdexTimechart);
             return singleTaskApdexTimechart;
         },
