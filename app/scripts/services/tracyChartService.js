@@ -275,6 +275,276 @@ var singleTaskApdexTimechart =
              height: 300
          }
         };
+var multiTaskApdexTimechart =             
+        {
+            options: {
+                chart: {
+                    zoomType: 'xy'
+                }
+            },
+            title: {
+                // text: 'APDEX'
+                text: ''
+            },
+            // subtitle: {
+            //     text: 'Application/Task'
+            // },
+            xAxis: {
+                type: 'datetime',
+                title: {
+                    text: 'Time'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'APDEX'
+                },
+                min: 0,
+                max: 1,
+                tickPositions: [0, 0.50, 0.70, 0.85, 0.94, 1],
+                minorGridLineWidth: 0,
+                gridLineWidth: 0,
+                alternateGridColor: null,
+                plotBands: [{
+                    from: 0,
+                    to: 0.49,
+                    color: '#f2f2f2',
+                    label: {
+                        text: 'Unacceptable',
+                        style: {
+                            color: '#606060'
+                        }
+                    }
+                }, {
+                    from: 0.50,
+                    to: 0.69,
+                    color: '#fce3e3',
+                    label: {
+                        text: 'Poor',
+                        style: {
+                            color: '#606060'
+                        }
+                    }
+                }, {
+                    from: 0.70,
+                    to: 0.84,
+                    color: '#fcead9',
+                    label: {
+                        text: 'Fair',
+                        style: {
+                            color: '#606060'
+                        }
+                    }
+                }, {
+                    from: 0.85,
+                    to: 0.93,
+                    color: '#e8f9e9',
+                    label: {
+                        text: 'Good',
+                        style: {
+                            color: '#606060'
+                        }
+                    }
+                }, { // Excellent
+                    from: 0.94,
+                    to: 1,
+                    color: '#d9f9f9',
+                    label: {
+                        text: 'Excellent',
+                        style: {
+                            color: '#606060'
+                        }
+                    }
+                }]
+            },
+            series: [{
+                name: 'APDEX',
+                type: 'spline',
+                data: [
+                    // [1429975020000, 0.96],
+                    // [1429975080000, 0.95],
+                    // [1429975140000, 0.94],
+                    // [1429975200000, 0.93],
+                    // [1429975260000, 0.94],
+                    // [1429975320000, 0.97],
+                    // [1429975380000, 0.95],
+                    // [1429975440000, 0.97],
+                    // [1429975500000, 0.83],
+                    // [1429975560000, 0.93],
+                    // [1429975620000, 0.97],
+                    // [1429975680000, 0.94],
+                    // [1429975740000, 0.96],
+                    // [1429975800000, 0.98],
+                    // [1429975860000, 0.95],
+                    // [1429975920000, 0.96]
+                ]
+            }],
+            loading: false,
+            credits: {
+                enabled: false
+            },
+            size: {
+             height: 300
+         }
+     };
+
+     var singleTaskVitalsTemplate = 
+        {
+            options: {
+                chart: {
+                    zoomType: 'xy'
+                },
+                tooltip: {
+                    shared: true
+                }
+            },
+            title: {
+                text: ''
+                // text: 'Vitals'
+            },
+            // subtitle: {
+            //     text: 'Application/Task'
+            // },
+                    xAxis: {
+                type: 'datetime',
+                title: {
+                    text: 'Time'
+                }
+            },
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[2]
+                    }
+                },
+                title: {
+                    text: 'Latency (p95)',
+                    style: {
+                        color: Highcharts.getOptions().colors[2]
+                    }
+                },
+                opposite: true
+
+            }, { // Secondary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Count',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[0]
+                    }
+                },
+                min: 0
+
+            }, { // Tertiary yAxis
+                gridLineWidth: 0,
+                title: {
+                    text: 'Error count',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                labels: {
+                    format: '{value}',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                opposite: true,
+                min: 0
+            }],
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                x: 80,
+                verticalAlign: 'top',
+                y: 55,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
+            series: [{
+                name: 'Count',
+                type: 'column',
+                yAxis: 1,
+                data: [                
+                    [1429975020000, 200   ],
+                    [1429975080000, 243   ],
+                    [1429975140000, 254   ],
+                    [1429975200000, 234   ],
+                    [1429975260000, 253   ],
+                    [1429975320000, 265   ],
+                    [1429975380000, 245   ],
+                    [1429975440000, 247   ],
+                    [1429975500000, 765   ],
+                    [1429975560000, 243   ],
+                    [1429975620000, 265   ],
+                    [1429975680000, 273   ],
+                    [1429975740000, 247   ],
+                    [1429975800000, 256   ],
+                    [1429975860000, 236   ],
+                    [1429975920000, 245   ]
+                ],
+            }, {
+                name: 'Error count',
+                type: 'spline',
+                yAxis: 2,
+                data: [                                
+                    [1429975020000, 1   ],
+                    [1429975080000, 2   ],
+                    [1429975140000, 1   ],
+                    [1429975200000, 2   ],
+                    [1429975260000, 1   ],
+                    [1429975320000, 2   ],
+                    [1429975380000, 1   ],
+                    [1429975440000, 2   ],
+                    [1429975500000, 4   ],
+                    [1429975560000, 1   ],
+                    [1429975620000, 2   ],
+                    [1429975680000, 1   ],
+                    [1429975740000, 2   ],
+                    [1429975800000, 1   ],
+                    [1429975860000, 2   ],
+                    [1429975920000, 1   ]
+                    ],
+                marker: {
+                    enabled: false
+                },
+                dashStyle: 'shortdot'
+            }, {
+                name: 'Latency (p95)',
+                type: 'spline',
+                data: [
+                    [1429975020000, 110   ],
+                    [1429975080000, 132   ],
+                    [1429975140000, 141   ],
+                    [1429975200000, 143   ],
+                    [1429975260000, 151   ],
+                    [1429975320000, 134   ],
+                    [1429975380000, 123   ],
+                    [1429975440000, 131   ],
+                    [1429975500000, 111   ],
+                    [1429975560000, 125   ],
+                    [1429975620000, 123   ],
+                    [1429975680000, 143   ],
+                    [1429975740000, 122   ],
+                    [1429975800000, 156   ],
+                    [1429975860000, 116   ],
+                    [1429975920000, 145   ]
+                    ],
+            }],
+            credits: {
+                enabled: false
+            },
+            size: {
+             height: 300
+         }
+        };
 var singleTaskHistogramTemplate = 
        {
             options : { 
@@ -352,6 +622,8 @@ var singleTaskHistogramTemplate =
              height: 400
          }
         };
+var lineColorPallete = ['#000000', '#058DC7', '#50B432', '#ED561B',  '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4', '#DDDF00'];
+var markerShapes = ['circle', 'triangle', 'square', 'diamond', 'triangle-down'];
 
 tracyChartService.factory('tracyCharts', function(){
     return {
@@ -366,6 +638,42 @@ tracyChartService.factory('tracyCharts', function(){
             singleTaskApdexTimechart.series[0].name = 'APDEX [' + chartData.rttT + chartData.rttUnit + ']';
 			// console.log(singleTaskApdexTimechart);
             return singleTaskApdexTimechart;
+        },
+
+        getMultiTaskApdexTimechart: function(application, chartData){
+            var i = 0;
+            var taskIx = 0;
+            multiTaskApdexTimechart.series = [];
+            for (taskIx = 0; taskIx < chartData.tasks.length ; taskIx++) {
+                var newData = [];
+                for (i = 0; i < chartData.tasks[taskIx].timeSequence.length; i++) {
+                    if (null != chartData.tasks[taskIx].apdexScores[i])   {
+                       newData.push([chartData.tasks[taskIx].timeSequence[i], chartData.tasks[taskIx].apdexScores[i]]);
+                    }
+                }
+
+                var series = {};
+                series.data = newData;
+                series.name = chartData.tasks[taskIx].task +
+                    ' [' + chartData.tasks[taskIx].rttT + chartData.tasks[taskIx].rttUnit + ']';
+                series.type = 'spline';
+                series.color = lineColorPallete[taskIx];
+                series.lineWidth = 1;
+                series.marker = {};
+                series.marker.symbol = markerShapes[taskIx];
+                // series.marker.enabled = false;
+                
+                if (multiTaskApdexTimechart.series[taskIx] == 'undefined') {
+                    multiTaskApdexTimechart.series.push(series)
+                }
+                else {
+                    multiTaskApdexTimechart.series[taskIx] = series;
+
+                }
+            }
+
+            // console.log(multiTaskApdexTimechart);
+            return multiTaskApdexTimechart;
         },
 
         getSingleTaskVitalsTimechart: function(application, task, chartData){

@@ -61,7 +61,7 @@
                         </ul>
                     </li>
                     <li ng-init="third=!third" ng-class="{active: multiCollapseVar==6}">
-                        <a ui-sref="dashboard.home" ng-click="multiCheck(6)">Demo <span class="fa arrow"></span></a>
+                        <a ui-sref="dashboard.measureApplication({ application: 'Static' })" ng-click="multiCheck(6)">Demo <span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level" collapse="multiCollapseVar!=6">
                             <li>
                                 <a ui-sref="dashboard.measureTask({ application: 'Demo App', task: 'Not-so-fast' })">Not so fast</a>

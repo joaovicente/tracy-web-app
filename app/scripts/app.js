@@ -150,6 +150,22 @@ angular
         }
     })      
 
+      .state('dashboard.measureApplication',{
+        templateUrl:'views/measure-application.html',
+        url:'/measure-application?application',        
+        resolve: {
+          loadMyFile:function($ocLazyLoad) {
+            return $ocLazyLoad.load({
+                name:'sbAdminApp',
+                files:[
+                'bower_components/highcharts-ng/dist/highcharts-ng.js',
+                'scripts/controllers/measureApplicationCtrl.js',
+                'scripts/services/tracyWebServices.js',
+                'scripts/services/tracyChartService.js']
+            })
+          }
+        }
+    })      
 
 
       .state('dashboard.table',{
