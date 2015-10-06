@@ -299,24 +299,107 @@ table.dataTable thead .sorting:after {
     font-size: 40px;
 }
 
+.xlarge {
+    font-size: 30px;
+}
+
+.large {
+    font-size: 20px;
+}
+
+.medium {
+    font-size: 15px;
+}
+
+.panel-apdex-blue {
+    border-color: #337ab7;
+}
+.panel-apdex-blue .panel-heading {
+    border-color: #337ab7;
+    color: #fff;
+    background-color: #337ab7;
+}
+.panel-apdex-blue a {
+    color: #337ab7;
+}
+.panel-apdex-blue a:hover {
+    color: #337ab7;
+}
+
+.panel-apdex-green {
+    border-color: #5cb85c;
+}
+.panel-apdex-green .panel-heading {
+    border-color: #5cb85c;
+    color: #fff;
+    background-color: #5cb85c;
+}
+.panel-apdex-green a {
+    color: #5cb85c;
+}
+.panel-apdex-green a:hover {
+    color: #5cb85c;
+}
+
+.panel-apdex-orange {
+    border-color: #f0ad4e;
+}
+.panel-apdex-orange .panel-heading {
+    border-color: #f0ad4e;
+    color: #fff;
+    background-color: #f0ad4e;
+}
+.panel-apdex-orange a {
+    color: #f0ad4e;
+}
+.panel-apdex-orange a:hover {
+    color: #f0ad4e;
+}
+
+.panel-apdex-red {
+    border-color: #d9534f;
+}
+.panel-apdex-red .panel-heading {
+    border-color: #d9534f;
+    color: #fff;
+    background-color: #d9534f;
+}
+.panel-apdex-red a {
+    color: #d9534f;
+}
+.panel-apdex-red a:hover {
+    color: #b52b27;
+}
+
+.panel-apdex-gray {
+    border-color: #777;
+}
+.panel-apdex-gray .panel-heading {
+    border-color: #777;
+    color: #fff;
+    background-color: #777;
+}
+.panel-apdex-gray a {
+    color: #777;
+}
+.panel-apdex-gray a:hover {
+    color: #777;
+}
+
 .panel-green {
     border-color: #5cb85c;
 }
-
 .panel-green .panel-heading {
     border-color: #5cb85c;
     color: #fff;
     background-color: #5cb85c;
 }
-
 .panel-green a {
     color: #5cb85c;
 }
-
 .panel-green a:hover {
     color: #3d8b3d;
 }
-
 .panel-red {
     border-color: #d9534f;
 }
