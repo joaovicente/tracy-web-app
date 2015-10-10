@@ -25,6 +25,7 @@ angular.module('sbAdminApp', ['highcharts-ng', 'tracyWebServices', 'tracyChartSe
 
 				    $scope.multiApdexTimechart 
 				    	= tracyCharts.getMultiTaskApdexTimechart($scope.application, $scope.measurement.multiApdexTimechart); 
+				    $scope.tasksMeasurementSummary = $scope.measurement.tasksSnapMeasurementSummary.tasks;
 				    // console.log($scope);
 				    
 				},
