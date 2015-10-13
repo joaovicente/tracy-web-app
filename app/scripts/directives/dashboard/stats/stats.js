@@ -46,6 +46,57 @@ angular.module('sbAdminApp')
             scope.apdexRatingShade = "default";
           }
 
+          // Response time shading
+          //   mean
+          if (scope.info.meanLatency < scope.info.rttT) {
+            scope.meanLatencyShade = "success";
+          } 
+          else if (scope.info.meanLatency >= scope.info.rttT && scope.info.meanLatency <= scope.info.rttF) {
+            scope.meanLatencyShade = "warning";
+          }
+          else if (scope.info.meanLatency > scope.info.rttF) {
+            scope.meanLatencyShade = "danger";
+          }
+          //   p50
+          if (scope.info.p50Latency < scope.info.rttT) {
+            scope.p50LatencyShade = "success";
+          } 
+          else if (scope.info.p50Latency >= scope.info.rttT && scope.info.p50Latency <= scope.info.rttF) {
+            scope.p50LatencyShade = "warning";
+          }
+          else if (scope.info.p50Latency > scope.info.rttF) {
+            scope.p50LatencyShade = "danger";
+          }
+          //   p90
+          if (scope.info.p90Latency < scope.info.rttT) {
+            scope.p90LatencyShade = "success";
+          } 
+          else if (scope.info.p90Latency >= scope.info.rttT && scope.info.p90Latency <= scope.info.rttF) {
+            scope.p90LatencyShade = "warning";
+          }
+          else if (scope.info.p90Latency > scope.info.rttF) {
+            scope.p90LatencyShade = "danger";
+          }
+          //   p95
+          if (scope.info.p95Latency < scope.info.rttT) {
+            scope.p95LatencyShade = "success";
+          } 
+          else if (scope.info.p95Latency >= scope.info.rttT && scope.info.p95Latency <= scope.info.rttF) {
+            scope.p95LatencyShade = "warning";
+          }
+          else if (scope.info.p95Latency > scope.info.rttF) {
+            scope.p95LatencyShade = "danger";
+          }
+          //   p99
+          if (scope.info.p99Latency < scope.info.rttT) {
+            scope.p99LatencyShade = "success";
+          } 
+          else if (scope.info.p99Latency >= scope.info.rttT && scope.info.p99Latency <= scope.info.rttF) {
+            scope.p99LatencyShade = "warning";
+          }
+          else if (scope.info.p99Latency > scope.info.rttF) {
+            scope.p99LatencyShade = "danger";
+          }
         }
     }
   });

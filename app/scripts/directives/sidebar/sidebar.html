@@ -44,30 +44,39 @@
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level" collapse="collapseVar!=2">
                     <li ng-init="third=!third" ng-class="{active: multiCollapseVar==3}">
-                        <a ui-sref="dashboard.home" ng-click="multiCheck(3)">App 1 <span class="fa arrow"></span></a>
+                        <a ui-sref="dashboard.home" ng-click="multiCheck(3)">DemoApp<span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level" collapse="multiCollapseVar!=3">
                             <li>
-                                <a ui-sref="dashboard.measureTask({ application: 'App A', task: 'Task A1' })">Task A1</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'DemoApp', task: 'Tortoise' })">Tortoise</a>
                             </li>
                             <li>
-                                <a ui-sref="dashboard.measureTask({ application: 'App A', task: 'Task A2' })">Task A2</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'DemoApp', task: 'Hare' })">Hare</a>
                             </li>
                             <li>
-                                <a ui-sref="dashboard.measureTask({ application: 'App A', task: 'Task A3' })">Task A3</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'DemoApp', task: 'RoadRunner' })">RoadRunner</a>
                             </li>
                             <li>
-                                <a ui-sref="dashboard.measureTask({ application: 'App A', task: 'Task A4' })">Task A4</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'DemoApp', task: 'RelayRace' })">RelayRace</a>
                             </li>
                         </ul>
                     </li>
-                    <li ng-init="third=!third" ng-class="{active: multiCollapseVar==6}">
-                        <a ui-sref="dashboard.measureApplication({ application: 'Static' })" ng-click="multiCheck(6)">Demo <span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level" collapse="multiCollapseVar!=6">
+                    <li ng-init="third=!third" ng-class="{active: multiCollapseVar==4}">
+                        <a ui-sref="dashboard.measureApplication({ application: 'SimulatedApp' })" ng-click="multiCheck(4)">SimulatedApp<span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level" collapse="multiCollapseVar!=4">
                             <li>
-                                <a ui-sref="dashboard.measureTask({ application: 'Demo App', task: 'Not-so-fast' })">Not so fast</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'SimulatedApp', task: 'StaticExcellentTask' })">StaticExcellentTask</a>
                             </li>
                             <li>
-                                <a ui-sref="dashboard.measureTask({ application: 'Demo App', task: 'Static' })">Static</a>
+                                <a ui-sref="dashboard.measureTask({ application: 'SimulatedApp', task: 'StaticGoodTask' })">StaticGoodTask</a>
+                            </li>
+                            <li>
+                                <a ui-sref="dashboard.measureTask({ application: 'SimulatedApp', task: 'StaticFairTask' })">StaticFairTask</a>
+                            </li>
+                            <li>
+                                <a ui-sref="dashboard.measureTask({ application: 'SimulatedApp', task: 'StaticPoorTask' })">StaticPoorTask</a>
+                            </li>
+                            <li>
+                                <a ui-sref="dashboard.measureTask({ application: 'SimulatedApp', task: 'StaticUnacceptableTask' })">StaticUnacceptableTask</a>
                             </li>
                         </ul>
                     </li>

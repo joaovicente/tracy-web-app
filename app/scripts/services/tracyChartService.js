@@ -714,7 +714,7 @@ tracyChartService.factory('tracyCharts', function(){
 					if (chartData.rttZone[i] == "Frustrated") {
 						countAndColor.color = '#C92524';
 					} else if (chartData.rttZone[i] == "Tolerating") {
-						countAndColor.color = '#D0FEC0';
+						countAndColor.color = '#F0AD4E';
 					} else if (chartData.rttZone[i] == "Satisfied") {
 						countAndColor.color = '#228B22';
 					} else {
