@@ -556,6 +556,7 @@ tracyChartService.factory('tracyCharts', function(){
         	// console.log(chartData);
             var i = 0, countData = [], errorCountData = [], p95Data = [], maxData = [];
             var totalErrorCount=0, maxSnapCount=0;
+            var twsSupportsMax = chartData.hasOwnProperty('max');
 			for (i = 0; i < chartData.timeSequence.length; i++) {
 				if (null != chartData.count[i])	{
 	            	countData.push([chartData.timeSequence[i], chartData.count[i]]);
@@ -568,8 +569,12 @@ tracyChartService.factory('tracyCharts', function(){
 				if (null != chartData.p95[i])	{
 	            	p95Data.push([chartData.timeSequence[i], chartData.p95[i]]);
 	        	}
-                if (null != chartData.max[i])   {
+                if (twsSupportsMax && null != chartData.max[i])   {
                     maxData.push([chartData.timeSequence[i], chartData.max[i]]);
+                }
+                else {
+                    singleTaskVitalsTemplate.series[3].data = {};
+                    singleTaskVitalsTemplate.series[3].visible = false;
                 }
 			}
             // console.log(singleTaskVitalsTemplate);
@@ -580,8 +585,10 @@ tracyChartService.factory('tracyCharts', function(){
             singleTaskVitalsTemplate.series[1].visible = (totalErrorCount == 0 ?  false : true);
 			singleTaskVitalsTemplate.series[2].data = p95Data;
             singleTaskVitalsTemplate.series[2].visible = (maxSnapCount == 1 ?  false : true);
-            singleTaskVitalsTemplate.series[3].data = maxData;
-            singleTaskVitalsTemplate.series[3].visible = (maxSnapCount == 1 ?  true : false);
+            if (twsSupportsMax) {
+                singleTaskVitalsTemplate.series[3].data = maxData;
+                singleTaskVitalsTemplate.series[3].visible = (maxSnapCount == 1 ?  true : false);
+            }
 
 			// console.log(singleTaskVitalsTemplate);
 			// console.log(JSON.stringify(singleTaskVitalsTemplate));
