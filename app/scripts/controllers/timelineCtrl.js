@@ -7,27 +7,48 @@ app.controller('TimelineCtrl', function($scope) {
     $scope.chart.type = "Timeline";
     $scope.chart.data = {
        "cols": [       
-            { type: 'string', id: 'Position' }
+            { type: 'string', id: 'Component' }
+            , { type: 'string', id: 'Label' }
+            , { type: 'string', role: 'tooltip', 'p': {'html': true} }
             , { type: 'date', id: 'Start' }
-            , { type: 'date', id: 'End' }                
+            , { type: 'date', id: 'End' }
       ]
       , "rows": [
             {
               "c": [
-                { "v": "Washington" },
-                { "v": new Date(1789,3,29),
-                  "f": "A long long time ago" },
-                { "v": new Date(1797,2,3),
-                  "f": "A long long time ago" }
+                { "v": "Proxy" },{ "v": "Client handler" },
+                { "v": null },
+                { "v": new Date(0)},{ "v": new Date(200)}
               ]
-            }, 
+            },
             {
               "c": [
-                { "v": "Adams" },
-                { "v": new Date(1797,2,3) },
-                { "v": new Date(1801,2,3) }
+                { "v": "Proxy" },{ "v": "Service handler" },
+                { "v": 'Backend handler time: <em>170ms</em><br>blah blah' },
+                { "v": new Date(10)},{ "v": new Date(190)}
               ]
-          }
-      ]
+            },
+            {
+              "c": [
+                { "v": "Acme-Service" },{ "v": "httpServlet" },
+                { "v": null },
+                { "v": new Date(20)},{ "v": new Date(180)}
+              ]
+            },
+            {
+              "c": [
+                { "v": "Acme-Service" },{ "v": "foo" },
+                { "v": null },
+                { "v": new Date(30)},{ "v": new Date(149)}
+              ]
+            },
+            {
+              "c": [
+                { "v": "Acme-Service" },{ "v": "bar" },
+                { "v": null },
+                { "v": new Date(150)},{ "v": new Date(170)}
+              ]
+            },            
+      ]      
     };
 });
