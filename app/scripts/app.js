@@ -196,6 +196,20 @@ angular
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
    })
+      .state('dashboard.timeline',{
+       templateUrl:'views/ui-elements/timeline.html',
+       url:'/timeline',
+       resolve: {
+          loadMyFile:function($ocLazyLoad) {
+            return $ocLazyLoad.load({
+                name:'sbAdminApp',
+                files:[
+                'bower_components/angular-google-chart/ng-google-chart.js',
+                'scripts/controllers/timelineCtrl.js']
+            })
+          }
+        }       
+   })
   }]);
 
     
