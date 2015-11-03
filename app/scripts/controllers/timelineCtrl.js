@@ -1,11 +1,10 @@
 // Code goes here
+//, 'tracyTaskGraph'
+var app = angular.module('sbAdminApp', [ 'googlechart', 'tracyTaskGraphService']);
 
-var app = angular.module('sbAdminApp', [ 'googlechart' ]);
-
-app.controller('TimelineCtrl', function($scope) {
-
-    $scope.chart = {}
-    $scope.tempChart = {}
+app.controller('TimelineCtrl', ['$scope', 'tracyTaskGraph', function($scope, tracyTaskGraph) {
+    $scope.chart = {};
+    $scope.tempChart = {};
     $scope.tracyTask = [
       {"taskId":"TID-ab1234-x","parentOptId":"4F3D","label":"foo","optId":"AD24","msecBefore":1446415872592,"msecAfter":1446415872712,"msecElapsed":120,"host":"ukdb807735-3.local","component":"Service"}
       ,{"taskId":"TID-ab1234-x","parentOptId":"4F3D","label":"bar","optId":"AE5F","msecBefore":1446415872712,"msecAfter":1446415872733,"msecElapsed":21,"host":"ukdb807735-3.local","component":"Service"}
@@ -81,10 +80,11 @@ app.controller('TimelineCtrl', function($scope) {
       ]      
     };
 
+    console.log(tracyTaskGraph.addTracyTask($scope.tracyTask));
     $scope.tracyTask.push(buildRefFrame($scope.tracyTask));
     $scope.tracyTask.sort(compareMsecBefore);
 
     $scope.tracyTask.forEach(addTracyEventToTimeline);
     $scope.chart = $scope.tempChart;
     // console.log($scope.chart.data);
-});
+}]);

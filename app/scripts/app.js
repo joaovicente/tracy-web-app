@@ -205,7 +205,9 @@ angular
                 name:'sbAdminApp',
                 files:[
                 'bower_components/angular-google-chart/ng-google-chart.js',
-                'scripts/controllers/timelineCtrl.js']
+                 'scripts/services/tracyTaskGraphService.js',
+                'scripts/controllers/timelineCtrl.js'
+               ]
             })
           }
         }       
