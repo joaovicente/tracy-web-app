@@ -81,7 +81,7 @@ app.controller('TimelineCtrl', ['$scope', 'tracyTaskGraph', function($scope, tra
     };
 
     tracyTaskGraph.addTracyTask($scope.tracyTask)
-    console.log(tracyTaskGraph.asGraph());
+    console.log(tracyTaskGraph.inspect());
     $scope.tracyTask.push(buildRefFrame($scope.tracyTask));
     $scope.tracyTask.sort(compareMsecBefore);
 
