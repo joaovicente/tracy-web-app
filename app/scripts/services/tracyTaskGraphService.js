@@ -8,25 +8,27 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
 	var edges = {};
 	var orphanNodes = [];
 	var rootNode = null;
+	var childrenMap = {};
 	var tree = {};
+	var googleTimeline = {};
+
 
     var factory = {}; 
 
     factory.addTracyTask = function(tracyTask) {
     	// Create graph from task
+   		reset();
     	tracyTask.forEach(addToGraph);
     	Object.keys(edges).forEach(determineRootNode);
     	if (rootNode != null)	{
     		buildTree();
+    		addRefFrameToGoogleTimeline();
+    		breadthFirstOperation(rootNode, addToGoogleTimeline)
     	}
     }
  
     factory.reset = function() {
-    	nodes = {};
-    	edges = {};
-		orphanNodes = [];
-		rootNode = null;
-		tree = {};
+    	reset();
     }
 
     factory.asGoogleTimeline = function() {
@@ -47,18 +49,69 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
 		graph.edges = edges;
 		graph.root = rootNode;
 		graph.tree = tree;
+		graph.childrenMap = childrenMap;
+		graph.googleTimeline = googleTimeline;
 		return graph;
     }
 
     // Helper functions
+    function reset() {
+    	nodes = {};
+    	edges = {};
+		orphanNodes = [];
+		rootNode = null;
+		childrenMap = {};
+		tree = {};
+    googleTimeline.data = {
+       "cols": [       
+            { type: 'string', id: 'Component' }
+            , { type: 'string', id: 'Label' }
+            , { type: 'string', role: 'tooltip', 'p': {'html': true} }
+            , { type: 'date', id: 'Start' }
+            , { type: 'date', id: 'End' }
+      ]
+      , "rows": [
+            // {
+            //   "c": [
+            //     { "v": "_" },{ "v": " 1 second " },
+            //     { "v": null },
+            //     { "v": new Date(1446379124000)},{ "v": new Date(1446379125000)}
+            //   ]
+            // },
+            // {
+            //   "c": [
+            //     { "v": "Proxy" },{ "v": "Service handler" },
+            //     { "v": 'Backend handler time: <em>170ms</em><br>blah blah' },
+            //     { "v": new Date(10)},{ "v": new Date(190)}
+            //   ]
+            // },
+      ]      
+    };
+    }
+
    	function addToGraph(element, index, array) {
    		nodes[element.optId] = element;
-   		edges[element.optId] = element.parentOptId
+   		edges[element.optId] = element.parentOptId;
+   		// addToChildrenMap()
+   		// Ensure empty array is created for all nodes even if they dont have childredn
+		if (!(element.optId in childrenMap))	{
+   			childrenMap[element.optId] = [];
+		}
+		// console.log(childrenMap);
+   		// append child to parent->childrenArray record if array already created
+   		if (element.parentOptId in childrenMap)	{
+   			childrenMap[element.parentOptId].push(element.optId);
+   		} 
+   		// create array and append child to parent->childrenArray record if array does not exist
+   		else	{
+   			childrenMap[element.parentOptId] = [];
+   			childrenMap[element.parentOptId].push(element.optId);
+   		}
     }
 
     function determineRootNode(element, index, array) {
     	// TODO: find nodes for which the parent is not in the set
-    	console.log("testing " + element);
+    	// console.log("testing " + element);
     	if (!(edges[element] in nodes))	{
     		orphanNodes.push(element);
     	}
@@ -67,9 +120,69 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     	}
     }
 
+
+    function compareMsecBefore(a,b) {
+      return (a.msecBefore - b.msecBefore)
+    }
+
+    function compareMsecAfter(a,b) {
+      return (a.msecBefore - b.msecBefore)
+    }
+    
+
+    function rowBuilder(value)  {
+      var rowObj = {};
+      rowObj.v = value;
+      return rowObj;
+    }
+
+    function addRefFrameToGoogleTimeline()  {
+      var rootTracyFrame = nodes[rootNode]
+      var refFrameEnd = Math.round(rootTracyFrame.msecAfter/1000) * 1000;
+      var refFrameStart = Math.round((rootTracyFrame.msecBefore-1000)/1000) * 1000;
+      var row = {c: []};
+      row.c.push(rowBuilder("Ref time frame"));
+      row.c.push(rowBuilder(""));
+      row.c.push(rowBuilder(null));
+      row.c.push(rowBuilder(new Date(refFrameStart)));
+      row.c.push(rowBuilder(new Date(refFrameEnd)));
+      googleTimeline.data.rows.push(row);
+
+    }
+
+    function addToGoogleTimeline(node) {
+      //console.log('a[' + index + '] = ' + element);
+      var element = nodes[node];
+      var row = {c: []};
+      row.c.push(rowBuilder(element.component));
+      row.c.push(rowBuilder(element.label));
+      row.c.push(rowBuilder(null));
+      row.c.push(rowBuilder(new Date(element.msecBefore)));
+      row.c.push(rowBuilder(new Date(element.msecAfter)));
+      googleTimeline.data.rows.push(row);
+      // console.log(row);
+    }
+
+    function breadthFirstOperation(fromNode, op)	{
+    	var children = childrenMap[fromNode];
+    	if (children.length == 0)	{
+    		addToGoogleTimeline(fromNode);
+    	}
+    	else	{
+    		// execute self operation before going into children
+    		addToGoogleTimeline(fromNode);    		
+    		for (var childNode in children) {
+    			breadthFirstOperation(children[childNode], op);	
+    		}
+    	}
+    }
+
     function buildTree()	{
     	// TODO
-    	// var nodesChildren = {}; // {node: 'AAAA', children : [ {node : 'BBBB', children : }]
+    	//	var nodesChildren = {}; 
+    	//	{ node: 'AAAA', depth: 1, children : 
+    	//		[ { node : 'BBBB', level: 2,  children : 
+    	//			[...]}]
     }
 
     return factory;
