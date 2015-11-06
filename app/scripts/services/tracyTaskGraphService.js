@@ -12,7 +12,6 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
 	var tree = {};
 	var googleTimeline = {};
 
-
     var factory = {}; 
 
     factory.addTracyTask = function(tracyTask) {
@@ -21,6 +20,11 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     	tracyTask.forEach(addToGraph);
     	Object.keys(edges).forEach(determineRootNode);
     	if (rootNode != null)	{
+    		// TODO: Support cross-component time adjustment
+    		// For each node, time-align its cross-component children if they are outside its parent frame.
+    		// crossComponentTimeAdjustment(); 
+    		// TODO: Support for ordered depth first iteration/operation using:
+    		// sortChildrenMap("msecBefore"); 
     		buildTree();
     	}
     }
@@ -57,8 +61,8 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
             ]      
         };
     	if (rootNode != null)	{
-    		addRefFrameToGoogleTimeline();
-    		breadthFirstOperation(rootNode, addToGoogleTimeline)
+    		gtAddTimeReference();
+    		breadthFirstOperation(rootNode, gtAddNode)
     	}
     	return googleTimeline;
     }
@@ -127,11 +131,11 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     function breadthFirstOperation(fromNode, op)	{
     	var children = childrenMap[fromNode];
     	if (children.length == 0)	{
-    		addToGoogleTimeline(fromNode);
+    		gtAddNode(fromNode);
     	}
     	else	{
     		// execute self operation before going into children
-    		addToGoogleTimeline(fromNode);    		
+    		gtAddNode(fromNode);    		
     		for (var childNode in children) {
     			breadthFirstOperation(children[childNode], op);	
     		}
@@ -150,35 +154,94 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     // Google timeline
     // ******************************************
 
-    function rowBuilder(value)  {
+    function gtRowBuilder(value)  {
       var rowObj = {};
       rowObj.v = value;
       return rowObj;
     }
 
-    function addRefFrameToGoogleTimeline()  {
+    function gtAddTimeReference()  {
       var rootTracyFrame = nodes[rootNode]
       var refFrameEnd = Math.round(rootTracyFrame.msecAfter/1000) * 1000;
       var refFrameStart = Math.round((rootTracyFrame.msecBefore-1000)/1000) * 1000;
       var row = {c: []};
-      row.c.push(rowBuilder("Ref time frame"));
-      row.c.push(rowBuilder(""));
-      row.c.push(rowBuilder(null));
-      row.c.push(rowBuilder(new Date(refFrameStart)));
-      row.c.push(rowBuilder(new Date(refFrameEnd)));
+      row.c.push(gtRowBuilder("Reference time"));
+      row.c.push(gtRowBuilder(""));
+      row.c.push(gtRowBuilder(null));
+      row.c.push(gtRowBuilder(new Date(refFrameStart)));
+      row.c.push(gtRowBuilder(new Date(refFrameEnd)));
       googleTimeline.data.rows.push(row);
 
     }
 
-    function addToGoogleTimeline(node) {
+    function humanTime(msec)	{
+    	var time;
+    	var milliseconds;
+    	var seconds;
+    	var minutes;
+    	var hours;
+    	var dayInMs = 24*60*60*1000;
+    	// less than 1 second
+    	if (msec <1000)	{
+    		time = msec + "ms";
+    	}
+    	// less than 1 minute
+    	if (msec > 1000 && msec < 60000)	{
+    		seconds = msec/1000;
+    		milliseconds = (msec-(seconds*1000));
+    		time = seconds + "s" + " " + milliseconds + "ms";
+    	}
+    	// less than 1 hour
+    	if (msec >= 60000 && msec < 3600000)	{
+    		minutes = msec / 60000;
+    		minutesRem= msec % 60000;
+    		seconds = minutesRem/1000;
+    		secondsRem = minutesRem%1000;
+    		milliseconds = secondsRem;
+    		time = 
+    			minutes + "m"
+    			+ " " + seconds + "s";
+    			// + " " + milliseconds + "ms";
+    	}
+    	// less than 1 day
+    	if (msec >= 3600000 && msec < dayInMs)	{
+    		hours = msec / 3600000;
+    		hoursRem = msec % 3600000;
+    		minutes = hoursRem / 60000;
+    		minutesRem= msec % 60000;
+    		seconds = minutesRem/1000;
+    		secondsRem = minutesRem%1000;
+    		milliseconds = secondsRem;
+    		time = 
+    			hours + "h"
+    			+ " " + minutes + "m";
+    			// + " " + seconds + "s" 
+    			// + " " + milliseconds + "ms";
+    	}
+    	return time;
+    }
+
+    function gtBuildTooltip(node)	{
+      //     { "v": 'Backend handler time: <em>170ms</em><br>blah blah' },
+      var tracyFrame = nodes[node];
+      var tooltip = 
+     	 "<b>component: </b>" + tracyFrame.component + "<br>"
+      	+ "<b>label: </b>" + tracyFrame.label + "<br>"
+      	+ "<b>wall time: </b>" + humanTime(tracyFrame.msecElapsed) + "<br>"
+      	// console.log(tooltip);
+      return tooltip;
+
+    }
+
+    function gtAddNode(node) {
       //console.log('a[' + index + '] = ' + element);
       var element = nodes[node];
       var row = {c: []};
-      row.c.push(rowBuilder(element.component));
-      row.c.push(rowBuilder(element.label));
-      row.c.push(rowBuilder(null));
-      row.c.push(rowBuilder(new Date(element.msecBefore)));
-      row.c.push(rowBuilder(new Date(element.msecAfter)));
+      row.c.push(gtRowBuilder(element.component));
+      row.c.push(gtRowBuilder(element.label));
+      row.c.push(gtRowBuilder(gtBuildTooltip(node)));
+      row.c.push(gtRowBuilder(new Date(element.msecBefore)));
+      row.c.push(gtRowBuilder(new Date(element.msecAfter)));
       googleTimeline.data.rows.push(row);
       // console.log(row);
     }
