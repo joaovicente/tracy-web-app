@@ -33,7 +33,8 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     	reset();
     }
 
-    factory.asGoogleTimeline = function() {
+    factory.asGoogleTimeline = function(depthWanted) {
+    	// depth wainted 0=all, 1=level1, 2=level2
     	googleTimeline.type = "Timeline";
     	googleTimeline.data = {
     		"cols": [       
@@ -60,9 +61,23 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
             // },
             ]      
         };
+        googleTimeline.options = { colors : []};
+
     	if (rootNode != null)	{
-    		gtAddTimeReference();
-    		breadthFirstOperation(rootNode, gtAddNode)
+    		if (nodes[rootNode].msecElapsed < 1000)	{
+    			googleTimeline.options.colors.push('#E6E6E6');
+    			gtAddTimeReference();
+    		}
+    		breadthFirstOperation(rootNode, gtAddNode, depthWanted, 1);
+    		// Colorize timeline
+    		for (var i=0 ; i < Object.keys(nodes).length ; i++)	{
+    			if (i%2)	{
+    				googleTimeline.options.colors.push('#5DBCF5');
+    			}
+    			else {
+    				googleTimeline.options.colors.push('#2241A3');
+    			}
+    		}
     	}
     	return googleTimeline;
     }
@@ -128,7 +143,7 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     	}
     }
 
-    function breadthFirstOperation(fromNode, op)	{
+    function breadthFirstOperation(fromNode, op, depthWanted, currentDepth)	{
     	var children = childrenMap[fromNode];
     	if (children.length == 0)	{
     		gtAddNode(fromNode);
@@ -136,8 +151,11 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     	else	{
     		// execute self operation before going into children
     		gtAddNode(fromNode);    		
-    		for (var childNode in children) {
-    			breadthFirstOperation(children[childNode], op);	
+    		if (currentDepth < depthWanted || depthWanted == 0)	{
+    			for (var childNode in children) {
+    				currentDepth++;
+    				breadthFirstOperation(children[childNode], op, depthWanted, currentDepth);	
+    			}
     		}
     	}
     }
@@ -162,10 +180,10 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
 
     function gtAddTimeReference()  {
       var rootTracyFrame = nodes[rootNode]
-      var refFrameEnd = Math.round(rootTracyFrame.msecAfter/1000) * 1000;
       var refFrameStart = Math.round((rootTracyFrame.msecBefore-1000)/1000) * 1000;
+      var refFrameEnd = Math.round((rootTracyFrame.msecAfter)/1000) * 1000;
       var row = {c: []};
-      row.c.push(gtRowBuilder("Reference time"));
+      row.c.push(gtRowBuilder("1 second"));
       row.c.push(gtRowBuilder(""));
       row.c.push(gtRowBuilder(null));
       row.c.push(gtRowBuilder(new Date(refFrameStart)));
@@ -175,28 +193,30 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     }
 
     function humanTime(msec)	{
-    	var time;
-    	var milliseconds;
-    	var seconds;
-    	var minutes;
-    	var hours;
+    	var time; 
+    	var milliseconds, seconds, minutes, hours;
+    	var secondsRem, minutesRem, hoursRem;
     	var dayInMs = 24*60*60*1000;
+    	var secsInMs = 1000;
+    	var minInMs = 60000;
+    	var hoursInMs = 3600000;
     	// less than 1 second
-    	if (msec <1000)	{
+    	if (msec <secsInMs)	{
     		time = msec + "ms";
     	}
     	// less than 1 minute
-    	if (msec > 1000 && msec < 60000)	{
-    		seconds = msec/1000;
-    		milliseconds = (msec-(seconds*1000));
+    	if (msec > secsInMs && msec < minInMs)	{
+    		seconds = Math.round(msec/secsInMs);
+    		secondsRem = msec%secsInMs
+    		milliseconds = secondsRem;
     		time = seconds + "s" + " " + milliseconds + "ms";
     	}
     	// less than 1 hour
-    	if (msec >= 60000 && msec < 3600000)	{
-    		minutes = msec / 60000;
-    		minutesRem= msec % 60000;
-    		seconds = minutesRem/1000;
-    		secondsRem = minutesRem%1000;
+    	if (msec >= minInMs && msec < hoursInMs)	{
+    		minutes = Math.round(msec / minInMs);
+    		minutesRem= msec % minInMs;
+    		seconds = Math.round(minutesRem/secsInMs);
+    		secondsRem = minutesRem%secsInMs;
     		milliseconds = secondsRem;
     		time = 
     			minutes + "m"
@@ -204,13 +224,13 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     			// + " " + milliseconds + "ms";
     	}
     	// less than 1 day
-    	if (msec >= 3600000 && msec < dayInMs)	{
-    		hours = msec / 3600000;
-    		hoursRem = msec % 3600000;
-    		minutes = hoursRem / 60000;
-    		minutesRem= msec % 60000;
-    		seconds = minutesRem/1000;
-    		secondsRem = minutesRem%1000;
+    	if (msec >= hoursInMs && msec < dayInMs)	{
+    		hours = Math.round(msec / hoursInMs);
+    		hoursRem = msec % hoursInMs;
+    		minutes = Math.round(hoursRem / secsInMs);
+    		minutesRem= msec % secsInMs;
+    		seconds = Math.round(minutesRem/secsInMs);
+    		secondsRem = minutesRem%secsInMs;
     		milliseconds = secondsRem;
     		time = 
     			hours + "h"
