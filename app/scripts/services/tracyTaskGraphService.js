@@ -22,8 +22,6 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     	Object.keys(edges).forEach(determineRootNode);
     	if (rootNode != null)	{
     		buildTree();
-    		addRefFrameToGoogleTimeline();
-    		breadthFirstOperation(rootNode, addToGoogleTimeline)
     	}
     }
  
@@ -32,7 +30,37 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     }
 
     factory.asGoogleTimeline = function() {
-    	
+    	googleTimeline.type = "Timeline";
+    	googleTimeline.data = {
+    		"cols": [       
+    		{ type: 'string', id: 'Component' }
+    		, { type: 'string', id: 'Label' }
+    		, { type: 'string', role: 'tooltip', 'p': {'html': true} }
+    		, { type: 'date', id: 'Start' }
+    		, { type: 'date', id: 'End' }
+    		]
+    		, "rows": [
+            // {
+            //   "c": [
+            //     { "v": "_" },{ "v": " 1 second " },
+            //     { "v": null },
+            //     { "v": new Date(1446379124000)},{ "v": new Date(1446379125000)}
+            //   ]
+            // },
+            // {
+            //   "c": [
+            //     { "v": "Proxy" },{ "v": "Service handler" },
+            //     { "v": 'Backend handler time: <em>170ms</em><br>blah blah' },
+            //     { "v": new Date(10)},{ "v": new Date(190)}
+            //   ]
+            // },
+            ]      
+        };
+    	if (rootNode != null)	{
+    		addRefFrameToGoogleTimeline();
+    		breadthFirstOperation(rootNode, addToGoogleTimeline)
+    	}
+    	return googleTimeline;
     }
 
     factory.asGraph = function() {
@@ -62,31 +90,6 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
 		rootNode = null;
 		childrenMap = {};
 		tree = {};
-    googleTimeline.data = {
-       "cols": [       
-            { type: 'string', id: 'Component' }
-            , { type: 'string', id: 'Label' }
-            , { type: 'string', role: 'tooltip', 'p': {'html': true} }
-            , { type: 'date', id: 'Start' }
-            , { type: 'date', id: 'End' }
-      ]
-      , "rows": [
-            // {
-            //   "c": [
-            //     { "v": "_" },{ "v": " 1 second " },
-            //     { "v": null },
-            //     { "v": new Date(1446379124000)},{ "v": new Date(1446379125000)}
-            //   ]
-            // },
-            // {
-            //   "c": [
-            //     { "v": "Proxy" },{ "v": "Service handler" },
-            //     { "v": 'Backend handler time: <em>170ms</em><br>blah blah' },
-            //     { "v": new Date(10)},{ "v": new Date(190)}
-            //   ]
-            // },
-      ]      
-    };
     }
 
    	function addToGraph(element, index, array) {
@@ -110,25 +113,42 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     }
 
     function determineRootNode(element, index, array) {
-    	// TODO: find nodes for which the parent is not in the set
+    	//  Find nodes for which the parent is not in the set
     	// console.log("testing " + element);
     	if (!(edges[element] in nodes))	{
     		orphanNodes.push(element);
     	}
+    	// There can be only one
     	if (orphanNodes.length == 1) {
     		rootNode = orphanNodes[0];
     	}
     }
 
-
-    function compareMsecBefore(a,b) {
-      return (a.msecBefore - b.msecBefore)
+    function breadthFirstOperation(fromNode, op)	{
+    	var children = childrenMap[fromNode];
+    	if (children.length == 0)	{
+    		addToGoogleTimeline(fromNode);
+    	}
+    	else	{
+    		// execute self operation before going into children
+    		addToGoogleTimeline(fromNode);    		
+    		for (var childNode in children) {
+    			breadthFirstOperation(children[childNode], op);	
+    		}
+    	}
     }
 
-    function compareMsecAfter(a,b) {
-      return (a.msecBefore - b.msecBefore)
+    function buildTree()	{
+    	// TODO
+    	//	var nodesChildren = {}; 
+    	//	{ node: 'AAAA', depth: 1, children : 
+    	//		[ { node : 'BBBB', level: 2,  children : 
+    	//			[...]}]
     }
-    
+
+    // ******************************************
+    // Google timeline
+    // ******************************************
 
     function rowBuilder(value)  {
       var rowObj = {};
@@ -161,28 +181,6 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
       row.c.push(rowBuilder(new Date(element.msecAfter)));
       googleTimeline.data.rows.push(row);
       // console.log(row);
-    }
-
-    function breadthFirstOperation(fromNode, op)	{
-    	var children = childrenMap[fromNode];
-    	if (children.length == 0)	{
-    		addToGoogleTimeline(fromNode);
-    	}
-    	else	{
-    		// execute self operation before going into children
-    		addToGoogleTimeline(fromNode);    		
-    		for (var childNode in children) {
-    			breadthFirstOperation(children[childNode], op);	
-    		}
-    	}
-    }
-
-    function buildTree()	{
-    	// TODO
-    	//	var nodesChildren = {}; 
-    	//	{ node: 'AAAA', depth: 1, children : 
-    	//		[ { node : 'BBBB', level: 2,  children : 
-    	//			[...]}]
     }
 
     return factory;
