@@ -196,7 +196,7 @@ angular
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
    })
-      .state('dashboard.timeline',{
+      .state('timeline',{
        templateUrl:'views/ui-elements/timeline.html',
        url:'/timeline',
        resolve: {
