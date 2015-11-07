@@ -430,6 +430,18 @@ var singleTaskHistogramTemplate =
                 },
                 legend: {
                     enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function() {
+                                    window.open(this.options.url);
+                                }
+                            }
+                        }
+                    }
                 }
             },
             title: {
@@ -617,6 +629,7 @@ tracyChartService.factory('tracyCharts', function(){
 					} else {
 						console.log("Unexpected Performance Zone")
 					}
+                    countAndColor.url = '/#/timeline?' + chartData.bins[i];
 	            	countAndColourData.push(countAndColor);
 	        	}
 			}
