@@ -2,13 +2,17 @@
 //, 'tracyTaskGraph'
 var app = angular.module('sbAdminApp', [ 'googlechart', 'tracyTaskGraphService']);
 
-app.controller('TimelineCtrl', ['$scope', 'tracyTaskGraph', function($scope, tracyTaskGraph) {
+app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', function($scope, $stateParams, tracyTaskGraph) {
     $scope.chart = {};
     var rt = 1446415872559;
     // var offset = 10; // msecOffset
     // var offset = 1010; // secOffset
     // var offset = 61010; // minOffset
     var offset = 3601000; // hourOffset
+
+    // Object.keys($stateParams).forEach(function(key) {
+    //  console.log(key, $stateParams[key]);
+    // });
 
     $scope.tracyTask = [
       {"taskId":"TID-ab1234-x","parentOptId":"4F3D","label":"foo","optId":"AD24","msecBefore":rt+offset*5,"msecAfter":rt+offset*7,"msecElapsed":offset*2,"host":"ukdb807735-3.local","component":"Service"}
