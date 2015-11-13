@@ -198,7 +198,7 @@ angular
    })
       .state('timeline',{
        templateUrl:'views/ui-elements/timeline.html',
-       url:'/timeline/:sequenceId?application&task&earliest&latest&responseTimeBelow&responeTimeAbove',
+       url:'/timeline/:sequenceId?application&task&earliest&latest&rtBelow&rtAbove',
        resolve: {
           loadMyFile:function($ocLazyLoad) {
             return $ocLazyLoad.load({

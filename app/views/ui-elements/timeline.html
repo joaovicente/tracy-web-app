@@ -1,12 +1,21 @@
-<div class="container">
+<div class="container" ng-controller="TimelineCtrl">
 	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Timeline Analysis</h1>
+			<h1 class="page-header">{{application}} {{task}} timeline analysis</h1>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-lg-12 col-sm-12">
-			<div ng-controller="TimelineCtrl">
+			<p>Time frame between {{earliest}} and {{latest}}</p>
+			<p>Response time between {{rtAbove}} and {{rtBelow}}</p>
+			<nav>
+				<ul class="pager">
+					<li class="previous"><a href="#"><span aria-hidden="true">&larr;</span> Previous</a></li>
+					<li>{{sequenceId}} of 20</li>
+					<li class="next"><a href="#{{nextUrl}}">Next <span aria-hidden="true">&rarr;</span></a></li>
+				</ul>
+			</nav>
+			<div >
 				<div google-chart chart="chart" style="width: 800px; height: 400px;"></div>
 			</div>
 		</div>
