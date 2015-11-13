@@ -61,12 +61,14 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
             // },
             ]      
         };
-        googleTimeline.options = { colors : []};
+        googleTimeline.options = { colors : [], hAxis : {}};
+        googleTimeline.options.hAxis = {format: 'd/M hh:mm', gridlines: {count: 4}};
 
     	if (rootNode != null)	{
     		if (nodes[rootNode].msecElapsed < 1000)	{
     			googleTimeline.options.colors.push('#E6E6E6');
     			gtAddTimeReference();
+		        googleTimeline.options.hAxis = {format: 'hh:mm:ss'};
     		}
     		breadthFirstOperation(rootNode, gtAddNode, depthWanted, 1);
     		// Colorize timeline
@@ -79,6 +81,7 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     			}
     		}
     	}
+    	// console.log(googleTimeline);
     	return googleTimeline;
     }
 
