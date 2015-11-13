@@ -11,8 +11,8 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', funct
     var offset = 3601000; // hourOffset
 
     // TODO: Make earliest and latest human readable as per GMT clock
-    $scope.earliest = $stateParams['earliest'];
-    $scope.latest = $stateParams['latest'];
+    $scope.earliest = new Date(Number($stateParams['earliest']));
+    $scope.latest = new Date(Number($stateParams['latest']));
     $scope.rtAbove = $stateParams['rtAbove'];
     $scope.rtBelow = $stateParams['rtBelow'];
     $scope.sequenceId = $stateParams['sequenceId'];
@@ -20,9 +20,17 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', funct
     $scope.task = (typeof $stateParams['task'] === 'undefined') ? 'unknown-task' : $stateParams['task'];
 
     // TODO: Move this to nextTimelineUrl function
-    // TODO: Alse create previousTimelineUrl function
     $scope.nextUrl = "/timeline/" 
       + (Number($scope.sequenceId)+1)  
+      + "?application=" + $scope.application
+      + "&task=" + $scope.task
+      + "&earliest=" + $stateParams['earliest']
+      + "&latest=" + $stateParams['latest'] 
+      + "&rtBelow=" + $stateParams['rtBelow']
+      + "&rtAbove=" + $stateParams['rtAbove'];
+    // TODO: Alse create previousTimelineUrl function
+    $scope.prevUrl = "/timeline/" 
+      + (Number($scope.sequenceId)-1)  
       + "?application=" + $scope.application
       + "&task=" + $scope.task
       + "&earliest=" + $stateParams['earliest']
