@@ -249,12 +249,13 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
       //     { "v": 'Backend handler time: <em>170ms</em><br>blah blah' },
       var tracyFrame = nodes[node];
       var tooltip = 
-     	 "<b>component: </b>" + tracyFrame.component + "<br>"
+      	"<div style=\"width:300px\">"
+     	+ "<b>component: </b>" + tracyFrame.component + "<br>"
       	+ "<b>label: </b>" + tracyFrame.label + "<br>"
       	+ "<b>wall time: </b>" + humanTime(tracyFrame.msecElapsed) + "<br>"
       	+ "<b>start: </b>" + new Date(tracyFrame.msecBefore) + "<br>"
       	+ "<b>end: </b>" + new Date(tracyFrame.msecAfter) + "<br>"
-      	// + "<b>finished: </b>" + new Date(msecAfter) + "<br>"
+      	+ "</div>"
       	// console.log(tooltip);
       return tooltip;
 
