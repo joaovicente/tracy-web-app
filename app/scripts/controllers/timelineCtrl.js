@@ -121,10 +121,11 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', 'Task
 
   function prepareAnalysisQuery(application, task, earliest, latest, rtAbove, rtBelow) {
     var query = {};
+    query.earliest = earliest;
+    query.latest = latest;
     query.application = application;
     query.task = task;
-    query.filter = "msecAfter:[" + earliest + " TO " + latest + "]"
-      + " AND msecElapsed:[" + rtAbove + " TO " + rtBelow + "]";
+    query.filter = "msecElapsed:[" + rtAbove + " TO " + rtBelow + "]";
     query.sort = "-msecElapsed";
     query.offset = "0";
     query.limit = "20";
@@ -147,7 +148,6 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', 'Task
   $scope.sequenceId = $stateParams['sequenceId'];
   $scope.application = (typeof $stateParams['application'] === 'undefined') ? 'unknown-application' : $stateParams['application'];
   $scope.task = (typeof $stateParams['task'] === 'undefined') ? 'unknown-task' : $stateParams['task'];
-
   $scope.query = prepareAnalysisQuery($scope.application, $scope.task, $stateParams['earliest'], $stateParams['latest'], $scope.rtAbove, $scope.rtBelow);
 
   $scope.getTaskAnalysis($scope.query);

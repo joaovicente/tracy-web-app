@@ -62,7 +62,8 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
             ]      
         };
         googleTimeline.options = { colors : [], hAxis : {}};
-        googleTimeline.options.hAxis = {format: 'd/M hh:mm', gridlines: {count: 4}};
+        // googleTimeline.options.hAxis = {format: 'd/M hh:mm', gridlines: {count: 4}};
+        googleTimeline.options.hAxis = {format: 'hh:mm', gridlines: {count: 4}};
 
     	if (rootNode != null)	{
     		if (nodes[rootNode].msecElapsed < 1000)	{
@@ -251,6 +252,9 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
      	 "<b>component: </b>" + tracyFrame.component + "<br>"
       	+ "<b>label: </b>" + tracyFrame.label + "<br>"
       	+ "<b>wall time: </b>" + humanTime(tracyFrame.msecElapsed) + "<br>"
+      	+ "<b>start: </b>" + new Date(tracyFrame.msecBefore) + "<br>"
+      	+ "<b>end: </b>" + new Date(tracyFrame.msecAfter) + "<br>"
+      	// + "<b>finished: </b>" + new Date(msecAfter) + "<br>"
       	// console.log(tooltip);
       return tooltip;
 
