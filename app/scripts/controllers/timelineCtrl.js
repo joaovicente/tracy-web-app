@@ -97,28 +97,29 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', 'Task
     return response;
   }
 
-  $scope.updateNavAndChart = function()  {
-    $scope.lastId = $scope.taskAnalysisResponse.tracyTasksPage.records;
-    tracyTaskGraph.addTracyTask($scope.taskAnalysisResponse.tracyTasksPage.tracyTasks[$scope.sequenceId-1].tracyTask.tracyEvents);
-    $scope.chart = tracyTaskGraph.asGoogleTimeline(0);
-    // console.log(JSON.stringify($scope.chart));
-    $scope.disablePrevious = disableIfFirst();
-    $scope.disableLast = disableIfLast();
-    $scope.prevUrl = previousUrl();
-    $scope.nextUrl = nextUrl();
+  $scope.updateNavAndChart = function(response)  {
   }
 
   $scope.getTaskAnalysis = function(query) {
-    TaskAnalysis.get(query,
-      function success(response) {
-        // console.log(JSON.stringify(response));
-        // $scope.updateNavAndChart();
-        // $scope.taskAnalysisResponse = response;
-      },
-      function error(errorResponse) {
-        console.log("Error:" + JSON.stringify(errorResponse));
-      }
-    );
+      TaskAnalysis.get(query,
+        function success(response) {
+          // console.log(JSON.stringify(response));
+          // $scope.updateNavAndChart(response);
+          // TODO: Uncomment to use TWS response
+          // response = mockTaskAnalysisReource(query);
+          $scope.lastId = response.tracyTasksPage.records;
+          tracyTaskGraph.addTracyTask(response.tracyTasksPage.tracyTasks[$scope.sequenceId-1].tracyTask.tracyEvents);
+          $scope.chart = tracyTaskGraph.asGoogleTimeline(0);
+          // console.log(JSON.stringify($scope.chart));
+          $scope.disablePrevious = disableIfFirst();
+          $scope.disableLast = disableIfLast();
+          $scope.prevUrl = previousUrl();
+          $scope.nextUrl = nextUrl();
+  },
+        function error(errorResponse) {
+          console.log("Error:" + JSON.stringify(errorResponse));
+        }
+      )
   }
 
   function prepareAnalysisQuery(application, task, earliest, latest, rtAbove, rtBelow) {
@@ -136,13 +137,11 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', 'Task
   // TODO: tracy-timeline-viewer controller: maxSequenceNumber, timelineArray, tracyTaskArray, rawTwsResponsesMap
 
 
-  $scope.chart = {};
   var rt = 1446415872559;
     // var offset = 10; // msecOffset
     // var offset = 1010; // secOffset
     // var offset = 61010; // minOffset
   var offset = 3601000; // hourOffset
-
 
   $scope.earliest = new Date(Number($stateParams['earliest']));
   $scope.latest = new Date(Number($stateParams['latest']));
@@ -153,9 +152,6 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', 'Task
   $scope.task = (typeof $stateParams['task'] === 'undefined') ? 'unknown-task' : $stateParams['task'];
 
   $scope.query = prepareAnalysisQuery($scope.application, $scope.task, $stateParams['earliest'], $stateParams['latest'], $scope.rtAbove, $scope.rtBelow);
-  $scope.taskAnalysisResponse = mockTaskAnalysisReource($scope.query);
 
   $scope.getTaskAnalysis($scope.query);
-
-  $scope.updateNavAndChart();
 }]);
