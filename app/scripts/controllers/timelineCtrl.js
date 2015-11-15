@@ -97,16 +97,13 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', 'Task
     return response;
   }
 
-  $scope.updateNavAndChart = function(response)  {
-  }
-
   $scope.getTaskAnalysis = function(query) {
       TaskAnalysis.get(query,
         function success(response) {
-          // console.log(JSON.stringify(response));
-          // $scope.updateNavAndChart(response);
-          // TODO: Uncomment to use TWS response
+          // Uncomment to use TWS mock response
           // response = mockTaskAnalysisReource(query);
+          // console.log(JSON.stringify(mockTaskAnalysisReource(query).tracyTasksPage.tracyTasks[0].tracyTask.tracyEvents));
+          // console.log(JSON.stringify(response.tracyTasksPage.tracyTasks[0].tracyTask.tracyEvents));
           $scope.lastId = response.tracyTasksPage.records;
           tracyTaskGraph.addTracyTask(response.tracyTasksPage.tracyTasks[$scope.sequenceId-1].tracyTask.tracyEvents);
           $scope.chart = tracyTaskGraph.asGoogleTimeline(0);
@@ -115,7 +112,7 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', 'Task
           $scope.disableLast = disableIfLast();
           $scope.prevUrl = previousUrl();
           $scope.nextUrl = nextUrl();
-  },
+        },
         function error(errorResponse) {
           console.log("Error:" + JSON.stringify(errorResponse));
         }
