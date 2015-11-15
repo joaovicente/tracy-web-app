@@ -206,6 +206,7 @@ angular
                 files:[
                 'bower_components/angular-google-chart/ng-google-chart.js',
                  'scripts/services/tracyTaskGraphService.js',
+                'scripts/services/tracyWebServices.js',
                 'scripts/controllers/timelineCtrl.js'
                ]
             })

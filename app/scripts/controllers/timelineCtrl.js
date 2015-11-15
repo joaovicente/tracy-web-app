@@ -1,8 +1,9 @@
 // Code goes here
 //, 'tracyTaskGraph'
-var app = angular.module('sbAdminApp', [ 'googlechart', 'tracyTaskGraphService']);
+var app = angular.module('sbAdminApp', [ 'googlechart', 'tracyTaskGraphService', 'tracyWebServices']);
 
-app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', function($scope, $stateParams, tracyTaskGraph) {
+app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', 'TaskAnalysis',
+  function($scope, $stateParams, tracyTaskGraph, TaskAnalysis) {
 
   function disableIfFirst() {
     var disabled = "";
@@ -96,12 +97,36 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', funct
     return response;
   }
 
+  $scope.updateNavAndChart = function()  {
+    $scope.lastId = $scope.taskAnalysisResponse.tracyTasksPage.records;
+    tracyTaskGraph.addTracyTask($scope.taskAnalysisResponse.tracyTasksPage.tracyTasks[$scope.sequenceId-1].tracyTask.tracyEvents);
+    $scope.chart = tracyTaskGraph.asGoogleTimeline(0);
+    // console.log(JSON.stringify($scope.chart));
+    $scope.disablePrevious = disableIfFirst();
+    $scope.disableLast = disableIfLast();
+    $scope.prevUrl = previousUrl();
+    $scope.nextUrl = nextUrl();
+  }
+
+  $scope.getTaskAnalysis = function(query) {
+    TaskAnalysis.get(query,
+      function success(response) {
+        // console.log(JSON.stringify(response));
+        // $scope.updateNavAndChart();
+        // $scope.taskAnalysisResponse = response;
+      },
+      function error(errorResponse) {
+        console.log("Error:" + JSON.stringify(errorResponse));
+      }
+    );
+  }
+
   function prepareAnalysisQuery(application, task, earliest, latest, rtAbove, rtBelow) {
     var query = {};
     query.application = application;
     query.task = task;
     query.filter = "msecAfter:[" + earliest + " TO " + latest + "]"
-      + " AND msecElapsed:[" + rtAbove + "TO" + rtBelow + "]";
+      + " AND msecElapsed:[" + rtAbove + " TO " + rtBelow + "]";
     query.sort = "-msecElapsed";
     query.offset = "0";
     query.limit = "20";
@@ -109,6 +134,7 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', funct
     return query;
   }
   // TODO: tracy-timeline-viewer controller: maxSequenceNumber, timelineArray, tracyTaskArray, rawTwsResponsesMap
+
 
   $scope.chart = {};
   var rt = 1446415872559;
@@ -126,32 +152,10 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', funct
   $scope.application = (typeof $stateParams['application'] === 'undefined') ? 'unknown-application' : $stateParams['application'];
   $scope.task = (typeof $stateParams['task'] === 'undefined') ? 'unknown-task' : $stateParams['task'];
 
-  var query = prepareAnalysisQuery($scope.application, $scope.task, $stateParams['earliest'], $stateParams['latest'], $scope.rtAbove, $scope.rtBelow);
-  var taskAnalysisResponse = mockTaskAnalysisReource(query);
+  $scope.query = prepareAnalysisQuery($scope.application, $scope.task, $stateParams['earliest'], $stateParams['latest'], $scope.rtAbove, $scope.rtBelow);
+  $scope.taskAnalysisResponse = mockTaskAnalysisReource($scope.query);
 
-  $scope.lastId = taskAnalysisResponse.tracyTasksPage.records;
+  $scope.getTaskAnalysis($scope.query);
 
-  // Object.keys($stateParams).forEach(function(key) {
-  //  console.log(key, $stateParams[key]);
-  // });
-
-  // $scope.tracyTask = [
-  //   {"taskId":"TID-ab1234-x","parentOptId":"4F3D","label":"foo","optId":"AD24","msecBefore":rt+offset*5,"msecAfter":rt+offset*7,"msecElapsed":offset*2,"host":"ukdb807735-3.local","component":"Service"}
-  //   ,{"taskId":"TID-ab1234-x","parentOptId":"4F3D","label":"bar","optId":"AE5F","msecBefore":rt+offset*3,"msecAfter":rt+offset*5,"msecElapsed":offset*2,"host":"ukdb807735-3.local","component":"Service"}
-  //   ,{"taskId":"TID-ab1234-x","parentOptId":"23CF","label":"Http servlet","optId":"4F3D","msecBefore":rt+offset*2,"msecAfter":rt+offset*8,"msecElapsed":offset*6,"host":"ukdb807735-3.local","component":"Service"}
-  //   ,{"taskId":"TID-ab1234-x","parentOptId":"DBF5","label":"Service handler","optId":"23CF","msecBefore":rt+offset,"msecAfter":rt+offset*9,"msecElapsed":offset*8,"host":"ukdb807735-3.local","component":"Proxy"}
-  //   ,{"taskId":"TID-ab1234-x","parentOptId":"AAAA","label":"Client handler","optId":"DBF5","msecBefore":rt,"msecAfter":rt+offset*10,"msecElapsed":offset*10,"host":"ukdb807735-3.local","component":"Proxy"}
-  // ];
-
-  // tracyTaskGraph.addTracyTask($scope.tracyTask);
-  // console.log($scope.tracyTask);
-  // console.log(taskAnalysisResponse.tracyTasksPage.tracyTasks[$scope.sequenceId-1].tracyTask.tracyEvents);
-  tracyTaskGraph.addTracyTask(taskAnalysisResponse.tracyTasksPage.tracyTasks[$scope.sequenceId-1].tracyTask.tracyEvents);
-  $scope.chart = tracyTaskGraph.asGoogleTimeline(0);
-  // console.log(tracyTaskGraph.inspect());
-
-  $scope.disablePrevious = disableIfFirst();
-  $scope.disableLast = disableIfLast();
-  $scope.prevUrl = previousUrl();
-  $scope.nextUrl = nextUrl();
+  $scope.updateNavAndChart();
 }]);
