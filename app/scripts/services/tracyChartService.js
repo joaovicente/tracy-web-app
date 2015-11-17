@@ -629,7 +629,26 @@ tracyChartService.factory('tracyCharts', function(){
 					} else {
 						console.log("Unexpected Performance Zone")
 					}
-                    countAndColor.url = '/#/timeline?' + chartData.bins[i];
+                    // Extract bin boundary values is not last bin (e.g. '10-20')
+                    var binBoundary = chartData.bins[i].split("-");
+                    if (binBoundary.length < 2) {
+                        // or single value if last bin (e.g. '>720')
+                        var lower = chartData.bins[i].replace(/>/g, '');
+                        var upper = Number.MAX_SAFE_INTEGER;
+                        binBoundary = [lower, Number.MAX_SAFE_INTEGER];
+                    }
+                    // TODO: latencyHistogram to be extended to supply earliest and latests.
+                    // Should not be relying on a another chart to obtain these
+                    var timesequenceArraySize = singleTaskVitalsTemplate.series[0].data.length;
+                    var earliest = singleTaskVitalsTemplate.series[0].data[0][0];
+                    var latest = singleTaskVitalsTemplate.series[0].data[timesequenceArraySize-1][0];
+                    var url = "/#/timeline/1?application=" + application
+                        + "&task=" + task
+                        + "&earliest=" + earliest
+                        + "&latest=" + latest
+                        + "&rtBelow=" + binBoundary[1]
+                        + "&rtAbove=" + binBoundary[0]
+                    countAndColor.url = url;
 	            	countAndColourData.push(countAndColor);
 	        	}
 			}
