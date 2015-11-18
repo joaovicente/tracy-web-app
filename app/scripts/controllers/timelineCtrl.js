@@ -141,8 +141,8 @@ app.controller('TimelineCtrl', ['$scope', '$stateParams','tracyTaskGraph', 'Task
     // var offset = 61010; // minOffset
   var offset = 3601000; // hourOffset
 
-  $scope.earliest = new Date(Number($stateParams['earliest']));
-  $scope.latest = new Date(Number($stateParams['latest']));
+  $scope.earliest = new Date(Number($stateParams['earliest'])).toUTCString();
+  $scope.latest = (new Date(Number($stateParams['latest']))).toUTCString();
   $scope.rtAbove = $stateParams['rtAbove'];
   $scope.rtBelow = $stateParams['rtBelow'];
   $scope.sequenceId = $stateParams['sequenceId'];

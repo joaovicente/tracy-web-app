@@ -63,13 +63,13 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
         };
         googleTimeline.options = { colors : [], hAxis : {}};
         // googleTimeline.options.hAxis = {format: 'd/M hh:mm', gridlines: {count: 4}};
-        googleTimeline.options.hAxis = {format: 'hh:mm', gridlines: {count: 4}};
+        googleTimeline.options.hAxis = {format: 'HH:mm', gridlines: {count: 4}};
 
     	if (rootNode != null)	{
     		if (nodes[rootNode].msecElapsed < 1000)	{
     			googleTimeline.options.colors.push('#E6E6E6');
     			gtAddTimeReference();
-		        googleTimeline.options.hAxis = {format: 'hh:mm:ss'};
+		        googleTimeline.options.hAxis = {format: 'HH:mm:ss'};
     		}
     		breadthFirstOperation(rootNode, gtAddNode, depthWanted, 1);
     		// Colorize timeline
@@ -190,8 +190,8 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
       row.c.push(gtRowBuilder("1 second"));
       row.c.push(gtRowBuilder(""));
       row.c.push(gtRowBuilder(null));
-      row.c.push(gtRowBuilder(new Date(refFrameStart)));
-      row.c.push(gtRowBuilder(new Date(refFrameEnd)));
+      row.c.push(gtRowBuilder(new Date(refFrameStart-360000)));
+      row.c.push(gtRowBuilder(new Date(refFrameEnd-360000)));
       googleTimeline.data.rows.push(row);
 
     }
@@ -253,8 +253,8 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
      	+ "<b>component: </b>" + tracyFrame.component + "<br>"
       	+ "<b>label: </b>" + tracyFrame.label + "<br>"
       	+ "<b>wall time: </b>" + humanTime(tracyFrame.msecElapsed) + "<br>"
-      	+ "<b>start: </b>" + new Date(tracyFrame.msecBefore) + "<br>"
-      	+ "<b>end: </b>" + new Date(tracyFrame.msecAfter) + "<br>"
+      	+ "<b>start: </b>" + new Date(tracyFrame.msecBefore).toUTCString() + "<br>"
+      	+ "<b>end: </b>" + new Date(tracyFrame.msecAfter).toUTCString() + "<br>"
       	+ "</div>"
       	// console.log(tooltip);
       return tooltip;
@@ -268,8 +268,8 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
       row.c.push(gtRowBuilder(element.component));
       row.c.push(gtRowBuilder(element.label));
       row.c.push(gtRowBuilder(gtBuildTooltip(node)));
-      row.c.push(gtRowBuilder(new Date(element.msecBefore)));
-      row.c.push(gtRowBuilder(new Date(element.msecAfter)));
+      row.c.push(gtRowBuilder(new Date(element.msecBefore-3600000)));      
+      row.c.push(gtRowBuilder(new Date(element.msecAfter-3600000)));
       googleTimeline.data.rows.push(row);
       // console.log(row);
     }
