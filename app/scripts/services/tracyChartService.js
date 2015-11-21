@@ -634,8 +634,8 @@ tracyChartService.factory('tracyCharts', function(){
                     if (binBoundary.length < 2) {
                         // or single value if last bin (e.g. '>720')
                         var lower = chartData.bins[i].replace(/>/g, '');
-                        var upper = Number.MAX_SAFE_INTEGER;
-                        binBoundary = [lower, Number.MAX_SAFE_INTEGER];
+                        var upper = lower*1000;
+                        binBoundary = [lower, lower*1000];
                     }
                     // TODO: latencyHistogram to be extended to supply earliest and latests.
                     // Should not be relying on a another chart to obtain these

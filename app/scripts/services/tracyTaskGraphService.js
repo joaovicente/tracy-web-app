@@ -62,15 +62,15 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
             ]      
         };
         googleTimeline.options = { colors : [], hAxis : {}};
-        // googleTimeline.options.hAxis = {format: 'd/M hh:mm', gridlines: {count: 4}};
+        googleTimeline.options.hAxis = {format: 'd/M hh:mm', gridlines: {count: 4}};
         googleTimeline.options.hAxis = {format: 'HH:mm', gridlines: {count: 4}};
 
     	if (rootNode != null)	{
     		if (nodes[rootNode].msecElapsed < 1000)	{
-    			googleTimeline.options.colors.push('#E6E6E6');
-    			gtAddTimeReference();
-		        googleTimeline.options.hAxis = {format: 'HH:mm:ss'};
+		        googleTimeline.options.hAxis = {format: 'HH:mm:ss.SSS'};
     		}
+    		googleTimeline.options.colors.push('#E6E6E6');
+    		gtAddTimeReference();
     		breadthFirstOperation(rootNode, gtAddNode, depthWanted, 1);
     		// Colorize timeline
     		for (var i=0 ; i < Object.keys(nodes).length ; i++)	{
@@ -83,6 +83,7 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     		}
     	}
     	// console.log(googleTimeline);
+    	// console.log(this.inspect());
     	return googleTimeline;
     }
 
@@ -184,14 +185,36 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
 
     function gtAddTimeReference()  {
       var rootTracyFrame = nodes[rootNode]
-      var refFrameStart = Math.round((rootTracyFrame.msecBefore-1000)/1000) * 1000;
-      var refFrameEnd = Math.round((rootTracyFrame.msecAfter)/1000) * 1000;
+	  var refFrameStart;
+      var refFrameEnd;
+      // TODO: Snap to second, minute or hour depending on duration
+      if (rootTracyFrame.msecAfter-rootTracyFrame.msecBefore <  60000)	{
+      	// Less than a minute - snap to second
+		refFrameStart = rootTracyFrame.msecBefore-(rootTracyFrame.msecBefore%1000);
+      	refFrameEnd = rootTracyFrame.msecAfter+1000-(rootTracyFrame.msecAfter%1000);
+      }
+      else if (rootTracyFrame.msecAfter-rootTracyFrame.msecBefore < 3600000)	{
+      	// Between a minute and an hour - snap to minute
+		refFrameStart = rootTracyFrame.msecBefore-(rootTracyFrame.msecBefore%60000);
+      	refFrameEnd = rootTracyFrame.msecAfter+60000-(rootTracyFrame.msecAfter%60000);
+      }
+      else if (rootTracyFrame.msecAfter-rootTracyFrame.msecBefore > 3600000)	{
+      	// Above an hour - snap to hour
+		refFrameStart = rootTracyFrame.msecBefore-(rootTracyFrame.msecBefore%3600000);
+      	refFrameEnd = rootTracyFrame.msecAfter+3600000-(rootTracyFrame.msecAfter%3600000);
+      }
+
+
+      // console.log(rootTracyFrame.msecBefore);
+      // console.log(rootTracyFrame.msecAfter);
+      // console.log(refFrameStart);
+      // console.log(refFrameEnd);
       var row = {c: []};
-      row.c.push(gtRowBuilder("1 second"));
+      row.c.push(gtRowBuilder("ref time"));
       row.c.push(gtRowBuilder(""));
       row.c.push(gtRowBuilder(null));
-      row.c.push(gtRowBuilder(new Date(refFrameStart-360000)));
-      row.c.push(gtRowBuilder(new Date(refFrameEnd-360000)));
+      row.c.push(gtRowBuilder(new Date(refFrameStart-3600000)));
+      row.c.push(gtRowBuilder(new Date(refFrameEnd-3600000)));
       googleTimeline.data.rows.push(row);
 
     }
@@ -253,8 +276,8 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
      	+ "<b>component: </b>" + tracyFrame.component + "<br>"
       	+ "<b>label: </b>" + tracyFrame.label + "<br>"
       	+ "<b>wall time: </b>" + humanTime(tracyFrame.msecElapsed) + "<br>"
-      	+ "<b>start: </b>" + new Date(tracyFrame.msecBefore).toUTCString() + "<br>"
-      	+ "<b>end: </b>" + new Date(tracyFrame.msecAfter).toUTCString() + "<br>"
+      	+ "<b>start: </b>" + new Date(tracyFrame.msecBefore).toISOString() + "<br>"
+      	+ "<b>end: </b>" + new Date(tracyFrame.msecAfter).toISOString() + "<br>"
       	+ "</div>"
       	// console.log(tooltip);
       return tooltip;
@@ -271,7 +294,7 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
       row.c.push(gtRowBuilder(new Date(element.msecBefore-3600000)));      
       row.c.push(gtRowBuilder(new Date(element.msecAfter-3600000)));
       googleTimeline.data.rows.push(row);
-      // console.log(row);
+      // onsole.log(row);
     }
 
     return factory;
