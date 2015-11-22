@@ -14,14 +14,17 @@ The UI is constructed using the [SB Admin](https://github.com/start-angular/sb-a
 
 ## Version history
 
-### 0.0.1
-* Initial version
+### 0.3.0
+* Added timeline analysis, triggered by latencyHistogram bars
+
+### 0.2.0
+* Updated Measure/Task to display APDEX rttT in label
+* Added Measure>{Application} feature
 
 ### 0.1.0
 * Added version to the UI
 * Changed Latency histogram height from 400px to 300px
 * Disallowed vitals chart from showing negative values in the Y axis
 
-### 0.2.0
-* Updated Measure/Task to display APDEX rttT in label
-* Added Measure>{Application} feature
+### 0.0.1
+* Initial version
