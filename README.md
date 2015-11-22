@@ -14,8 +14,11 @@ The UI is constructed using the [SB Admin](https://github.com/start-angular/sb-a
 
 ## Version history
 
+### 0.4.0
+* Timeline analysis, triggered by latencyHistogram bars
+
 ### 0.3.0
-* Added timeline analysis, triggered by latencyHistogram bars
+Support for maximum response time in Vitals Timechart
 
 ### 0.2.0
 * Updated Measure/Task to display APDEX rttT in label
