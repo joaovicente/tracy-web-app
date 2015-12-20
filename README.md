@@ -14,6 +14,12 @@ The UI is constructed using the [SB Admin](https://github.com/start-angular/sb-a
 
 ## Version history
 
+### 0.5.0
+* Application title renamed from APM Dashboard to Tracy Web App
+* Removed (future) demoApp from menu - until implemented
+* Removed SimulatedBatchApp from menu - main focus to be on transactional services
+* Renamed war to twa instead of tracy-web-app
+
 ### 0.4.0
 * Timeline analysis, triggered by latencyHistogram bars
 
