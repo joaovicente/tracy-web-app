@@ -370,8 +370,10 @@ module.exports = function (grunt) {
     war: {
       target: {
           options: {
-            war_dist_folder: 'war',    /* Folder where to generate the WAR. */
-            war_name: 'tracy-web-app'                    /* The name fo the WAR file (.war will be the extension) */
+            /* Folder where to generate the WAR. */
+            war_dist_folder: 'war',    
+            /* The name fo the WAR file (.war will be the extension) */
+            war_name: 'twa'            
           },
           files: [
             {

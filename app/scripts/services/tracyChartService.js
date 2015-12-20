@@ -642,7 +642,7 @@ tracyChartService.factory('tracyCharts', function(){
                     var timesequenceArraySize = singleTaskVitalsTemplate.series[0].data.length;
                     var earliest = singleTaskVitalsTemplate.series[0].data[0][0];
                     var latest = singleTaskVitalsTemplate.series[0].data[timesequenceArraySize-1][0];
-                    var url = "/#/timeline/1?application=" + application
+                    var url = "#/timeline/1?application=" + application
                         + "&task=" + task
                         + "&earliest=" + earliest
                         + "&latest=" + latest
