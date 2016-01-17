@@ -6,7 +6,7 @@ var tracyWebServices =
  
 tracyWebServices.factory('TaskMeasurement', ['$resource',
 function($resource) {
-return $resource("http://localhost:8080/tws/v1/applications/:application/tasks/:task/measurement", {}, {
+return $resource("http://tws:8080/tws/v1/applications/:application/tasks/:task/measurement", {}, {
   get: {method: 'GET', cache: false, isArray: false},	
   query: {method:'GET', isArray:true},
   save: {method: 'POST', cache: false, isArray: false},
@@ -17,7 +17,7 @@ return $resource("http://localhost:8080/tws/v1/applications/:application/tasks/:
 
 tracyWebServices.factory('TaskAnalysis', ['$resource',
 function($resource) {
-return $resource("http://localhost:8080/tws/v1/applications/:application/tasks/:task/analysis", {}, {
+return $resource("http://tws:8080/tws/v1/applications/:application/tasks/:task/analysis", {}, {
   get: {method: 'GET', cache: false, isArray: false}, 
   query: {method:'GET', isArray:true},
   save: {method: 'POST', cache: false, isArray: false},
@@ -28,7 +28,7 @@ return $resource("http://localhost:8080/tws/v1/applications/:application/tasks/:
 
 tracyWebServices.factory('ApplicationMeasurement', ['$resource',
 function($resource) {
-return $resource("http://localhost:8080/tws/v1/applications/:application/measurement", {}, {
+return $resource("http://tws:8080/tws/v1/applications/:application/measurement", {}, {
   get: {method: 'GET', cache: false, isArray: false},	
   query: {method:'GET', isArray:true},
   save: {method: 'POST', cache: false, isArray: false},
