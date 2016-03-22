@@ -14,6 +14,9 @@ The UI is constructed using the [SB Admin](https://github.com/start-angular/sb-a
 
 ## Version history
 
+### 0.6.0
+* Changed tws host from localhost to tws, to support docker deployment
+
 ### 0.5.0
 * Application title renamed from APM Dashboard to Tracy Web App
 * Removed (future) demoApp from menu - until implemented
