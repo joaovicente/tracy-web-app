@@ -14,8 +14,9 @@ The UI is constructed using the [SB Admin](https://github.com/start-angular/sb-a
 
 ## Version history
 
-### 0.7.0
-* Fixed timeline tooltip time defect
+### 0.6.1
+* Fixed timeline tooltip incorrect time defect
+* Fixed chart update issue (upgraded highcharts-ng to 0.0.11)
 
 ### 0.6.0
 * Changed tws host from localhost to tws, to support docker deployment
