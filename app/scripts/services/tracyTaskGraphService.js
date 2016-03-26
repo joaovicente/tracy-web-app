@@ -246,26 +246,31 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     		secondsRem = minutesRem%secsInMs;
     		milliseconds = secondsRem;
     		time = 
-    			minutes + "m"
-    			+ " " + seconds + "s";
-    			// + " " + milliseconds + "ms";
-    	}
+       minutes + "m"
+       + " " + seconds + "s";
+     }
     	// less than 1 day
     	if (msec >= hoursInMs && msec < dayInMs)	{
     		hours = Math.round(msec / hoursInMs);
     		hoursRem = msec % hoursInMs;
-    		minutes = Math.round(hoursRem / secsInMs);
-    		minutesRem= msec % secsInMs;
-    		seconds = Math.round(minutesRem/secsInMs);
-    		secondsRem = minutesRem%secsInMs;
-    		milliseconds = secondsRem;
+    		minutes = Math.round(hoursRem / minInMs);
     		time = 
-    			hours + "h"
-    			+ " " + minutes + "m";
-    			// + " " + seconds + "s" 
-    			// + " " + milliseconds + "ms";
-    	}
-    	return time;
+       hours + "h"
+       + " " + minutes + "m";
+     }
+      // more than 1 day
+      if (msec > dayInMs)  {
+        days = Math.round(msec / dayInMs);
+        daysRem = msec % dayInMs;
+        hours = Math.round(daysRem / hoursInMs);
+        hoursRem = daysRem % hoursInMs;
+        minutes = Math.round(hoursRem / minInMs);
+        time = 
+        days + "d"
+        + " " + hours + "h"
+        + " " + minutes + "m";
+      }
+      return time;
     }
 
     function gtBuildTooltip(node)	{
