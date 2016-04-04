@@ -221,8 +221,8 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
 
     function humanTime(msec)	{
     	var time; 
-    	var milliseconds, seconds, minutes, hours;
-    	var secondsRem, minutesRem, hoursRem;
+    	var milliseconds, seconds, minutes, hours, days;
+    	var secondsRem, minutesRem, hoursRem, daysRem;
     	var dayInMs = 24*60*60*1000;
     	var secsInMs = 1000;
     	var minInMs = 60000;
