@@ -641,11 +641,13 @@ tracyChartService.factory('tracyCharts', function(){
                     // Should not be relying on a another chart to obtain these
                     var timesequenceArraySize = singleTaskVitalsTemplate.series[0].data.length;
                     var earliest = singleTaskVitalsTemplate.series[0].data[0][0];
+                    var latestMinus1 = singleTaskVitalsTemplate.series[0].data[timesequenceArraySize-2][0];
                     var latest = singleTaskVitalsTemplate.series[0].data[timesequenceArraySize-1][0];
+                    var latestPlus1 = latest + latest - latestMinus1;
                     var url = "#/timeline/1?application=" + application
                         + "&task=" + task
                         + "&earliest=" + earliest
-                        + "&latest=" + latest
+                        + "&latest=" + latestPlus1
                         + "&rtBelow=" + binBoundary[1]
                         + "&rtAbove=" + binBoundary[0]
                     countAndColor.url = url;
