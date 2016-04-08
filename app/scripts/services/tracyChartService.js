@@ -708,9 +708,9 @@ tracyChartService.factory('tracyCharts', function(){
                     // TODO: latencyHistogram to be extended to supply earliest and latests.
                     // Should not be relying on a another chart to obtain these
                     var timesequenceArraySize = singleTaskVitalsTemplate.series[0].data.length;
-                    var earliest = singleTaskVitalsTemplate.series[0].data[0][0];
-                    var latestMinus1 = singleTaskVitalsTemplate.series[0].data[timesequenceArraySize-2][0];
-                    var latest = singleTaskVitalsTemplate.series[0].data[timesequenceArraySize-1][0];
+                    var earliest = singleTaskVitalsTemplate.series[0].data[0].x;
+                    var latestMinus1 = singleTaskVitalsTemplate.series[0].data[timesequenceArraySize-2].x;
+                    var latest = singleTaskVitalsTemplate.series[0].data[timesequenceArraySize-1].x;
                     var latestPlus1 = latest + latest - latestMinus1;
                     // http://api.highcharts.com/highcharts#plotOptions.area.point.events.click
                     var url = "#/timeline/1?application=" + application
