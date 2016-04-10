@@ -14,10 +14,10 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     var numOptsInComponent = {};
     var factory = {};
     var nodeColors = {
-        componentColor : {}, // assign components a color sequence (offset to componentColorPallette)
+        componentColor : {}, // assign components a color sequence (offset to componentColorPalette)
         componentOptCount : {}, // counts how many operations seen for a given component
         componentColorCursor : 0, // Increments for each new component seen
-        componentPallete : [
+        componentPalette : [
             {color:'grey',     lightShade:'#B3B3B3', darkShade:'#B3B3B3'},
             {color:'red',      lightShade:'#FF0000', darkShade:'#BD000C'},
             {color:'orange',   lightShade:'#FF7F00', darkShade:'#BE5104'},
@@ -39,7 +39,7 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
                 // new component
                 this.componentOptCount[node.component] = 0;
                 this.componentColor[node.component] =
-                    this.componentColorCursor % this.componentPallete.length;
+                    this.componentColorCursor % this.componentPalette.length;
                     // Assign component color
                 this.componentColorCursor++;
             }
@@ -54,17 +54,17 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
                 "component: " + node.component
                 +", label: " + node.label
                 +",  component color number: " + this.componentColor[node.component]
-                +", component color name: "+ this.componentPallete[this.componentColor[node.component]].color
+                +", component color name: "+ this.componentPalette[this.componentColor[node.component]].color
                 +", darkShaded: " + darkShade);
             }
 
             // Assign colors
             var color;
             if (darkShade)  {
-                color = this.componentPallete[this.componentColor[node.component]].darkShade;
+                color = this.componentPalette[this.componentColor[node.component]].darkShade;
             }
             else    {
-                color = this.componentPallete[this.componentColor[node.component]].lightShade;
+                color = this.componentPalette[this.componentColor[node.component]].lightShade;
             }
             return color;
         }
