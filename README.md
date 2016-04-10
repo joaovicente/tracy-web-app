@@ -14,6 +14,10 @@ The UI is constructed using the [SB Admin](https://github.com/start-angular/sb-a
 
 ## Version history
 
+### 0.8.0
+* Added timeline support for apdex chart and vitals time chart
+* Updated timeline to show one colour per component
+
 ### 0.7.0
 * Renamed demo applications/tasks
 
