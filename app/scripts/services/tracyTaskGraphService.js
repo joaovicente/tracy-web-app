@@ -3,7 +3,7 @@
 
 var tracyTaskGraphService = angular.module('tracyTaskGraphService', ['']);
 tracyTaskGraphService.factory('tracyTaskGraph', function() {
-     
+    var customColors = false;
 	var nodes = {};
 	var edges = {};
 	var orphanNodes = [];
@@ -11,8 +11,64 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
 	var childrenMap = {};
 	var tree = {};
 	var googleTimeline = {};
+    var numOptsInComponent = {};
+    var factory = {};
+    var nodeColors = {
+        componentColor : {}, // assign components a color sequence (offset to componentColorPalette)
+        componentOptCount : {}, // counts how many operations seen for a given component
+        componentColorCursor : 0, // Increments for each new component seen
+        componentPalette : [
+            {color:'grey',     lightShade:'#B3B3B3', darkShade:'#B3B3B3'},
+            {color:'red',      lightShade:'#FF0000', darkShade:'#BD000C'},
+            {color:'orange',   lightShade:'#FF7F00', darkShade:'#BE5104'},
+            {color:'yellow',   lightShade:'#FFFF00', darkShade:'#C0C407'},
+            {color:'green',    lightShade:'#00FF00', darkShade:'#1AC603'},
+            {color:'blue',     lightShade:'#0000FF', darkShade:'#0000C0'},
+            {color:'purple',   lightShade:'#7F007F', darkShade:'#510053'},
+            {color:'violet',   lightShade:'#FF00FF', darkShade:'#BD00C0'}
+            ],
+        reset : function ()    {
+            this.componentColor = {};
+            this.componentOptCount = {};
+            this.componentColorCursor = 0;
+        },
+        getNodeColor : function (node) {
+            // Assumption: called for each node in a breadth first sequence
+            var darkShade = false ;
+            if (!this.componentOptCount.hasOwnProperty(node.component)) {
+                // new component
+                this.componentOptCount[node.component] = 0;
+                this.componentColor[node.component] =
+                    this.componentColorCursor % this.componentPalette.length;
+                    // Assign component color
+                this.componentColorCursor++;
+            }
+            else if ((this.componentOptCount[node.component]%2)) {
+                // Interleave darker every other operation (2nd, 4th, 6th, ...)
+                darkShade = true;
+            }
+            this.componentOptCount[node.component]++;
 
-    var factory = {}; 
+            if (customColors)   {
+            console.log(
+                "component: " + node.component
+                +", label: " + node.label
+                +",  component color number: " + this.componentColor[node.component]
+                +", component color name: "+ this.componentPalette[this.componentColor[node.component]].color
+                +", darkShaded: " + darkShade);
+            }
+
+            // Assign colors
+            var color;
+            if (darkShade)  {
+                color = this.componentPalette[this.componentColor[node.component]].darkShade;
+            }
+            else    {
+                color = this.componentPalette[this.componentColor[node.component]].lightShade;
+            }
+            return color;
+        }
+    }
 
     factory.addTracyTask = function(tracyTask) {
     	// Create graph from task
@@ -61,28 +117,35 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
             // },
             ]      
         };
-        googleTimeline.options = { colors : [], hAxis : {}};
+        // TODO: To customize colors by swap commented lines below and uncomment googleTimeline.options.colors.push
+        if (customColors)   {
+            googleTimeline.options = { colors : [], hAxis : {}};
+        }
+        else    {
+            googleTimeline.options = { timeline : {}, hAxis : {}};
+        }
         googleTimeline.options.hAxis = {format: 'd/M hh:mm', gridlines: {count: 4}};
         googleTimeline.options.hAxis = {format: 'HH:mm', gridlines: {count: 4}};
-
+        if (!customColors)  {
+            googleTimeline.options.timeline["colorByRowLabel"] = true;
+        }
+        nodeColors.reset();
     	if (rootNode != null)	{
     		if (nodes[rootNode].msecElapsed < 1000)	{
 		        googleTimeline.options.hAxis = {format: 'HH:mm:ss.SSS'};
     		}
-    		googleTimeline.options.colors.push('#E6E6E6');
+    		var refTimeNodeColor = nodeColors.getNodeColor({component: "reference time"});
+    		if (customColors)   {
+    		    googleTimeline.options.colors.push(refTimeNodeColor);
+            }
     		gtAddTimeReference();
+
     		breadthFirstOperation(rootNode, gtAddNode, depthWanted, 1);
-    		// Colorize timeline
-    		for (var i=0 ; i < Object.keys(nodes).length ; i++)	{
-    			if (i%2)	{
-    				googleTimeline.options.colors.push('#5DBCF5');
-    			}
-    			else {
-    				googleTimeline.options.colors.push('#2241A3');
-    			}
-    		}
     	}
-    	// console.log(googleTimeline);
+//    	 console.log(googleTimeline);
+         if (customColors)  {
+    	    console.log(JSON.stringify(googleTimeline));
+    	 }
     	// console.log(this.inspect());
     	return googleTimeline;
     }
@@ -120,7 +183,7 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
    		nodes[element.optId] = element;
    		edges[element.optId] = element.parentOptId;
    		// addToChildrenMap()
-   		// Ensure empty array is created for all nodes even if they dont have childredn
+   		// Ensure empty array is created for all nodes even if they dont have children
 		if (!(element.optId in childrenMap))	{
    			childrenMap[element.optId] = [];
 		}
@@ -151,11 +214,11 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     function breadthFirstOperation(fromNode, op, depthWanted, currentDepth)	{
     	var children = childrenMap[fromNode];
     	if (children.length == 0)	{
-    		gtAddNode(fromNode);
+    		op(fromNode);
     	}
     	else	{
     		// execute self operation before going into children
-    		gtAddNode(fromNode);    		
+    		op(fromNode);
     		if (currentDepth < depthWanted || depthWanted == 0)	{
     			for (var childNode in children) {
     				currentDepth++;
@@ -210,7 +273,7 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
       // console.log(refFrameStart);
       // console.log(refFrameEnd);
       var row = {c: []};
-      row.c.push(gtRowBuilder("ref time"));
+      row.c.push(gtRowBuilder("reference time"));
       row.c.push(gtRowBuilder(""));
       row.c.push(gtRowBuilder(null));
       row.c.push(gtRowBuilder(new Date(refFrameStart-3600000)));
@@ -221,8 +284,8 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
 
     function humanTime(msec)	{
     	var time; 
-    	var milliseconds, seconds, minutes, hours;
-    	var secondsRem, minutesRem, hoursRem;
+    	var milliseconds, seconds, minutes, hours, days;
+    	var secondsRem, minutesRem, hoursRem, daysRem;
     	var dayInMs = 24*60*60*1000;
     	var secsInMs = 1000;
     	var minInMs = 60000;
@@ -291,6 +354,12 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
 
     function gtAddNode(node) {
       //console.log('a[' + index + '] = ' + element);
+      // Add color to node
+      var nodeColor = nodeColors.getNodeColor(nodes[node]);
+      if (customColors) {
+        googleTimeline.options.colors.push(nodeColor);
+      }
+      // Add node
       var element = nodes[node];
       var row = {c: []};
       row.c.push(gtRowBuilder(element.component));
@@ -299,7 +368,7 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
       row.c.push(gtRowBuilder(new Date(element.msecBefore-3600000)));      
       row.c.push(gtRowBuilder(new Date(element.msecAfter-3600000)));
       googleTimeline.data.rows.push(row);
-      // onsole.log(row);
+      // console.log(row);
     }
 
     return factory;

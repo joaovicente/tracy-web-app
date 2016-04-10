@@ -5,11 +5,25 @@ var tracyChartService =
  angular.module('tracyChartService', ['highcharts-ng']);
 
 var rttUnit = "?";
+var rttF = 0;
 var singleTaskApdexTimechart =             
         {
             options: {
                 chart: {
                     zoomType: 'xy'
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function() {
+                                    window.open(this.url);
+//                                    alert('Category: ' + this.category + ', value: ' + this.url);
+                                }
+                            }
+                        }
+                    }
                 }
             },
             title: {
@@ -125,6 +139,19 @@ var singleTaskVitalsTemplate =
                 },
                 tooltip: {
                     shared: true
+                },
+                plotOptions: {
+                    series: {
+                        cursor: 'pointer',
+                        point: {
+                            events: {
+                                click: function() {
+                                    window.open(this.options.url);
+//                                    alert('Category: ' + this.category + ', value: ' + this.url);
+                                }
+                            }
+                        }
+                    }
                 }
             },
             title: {
@@ -515,16 +542,31 @@ var markerShapes = ['circle', 'triangle', 'square', 'diamond', 'triangle-down'];
 tracyChartService.factory('tracyCharts', function(){
     return {
         getSingleTaskApdexTimechart: function(application, task, chartData){
-            var i = 0, newData = [];
+            var i = 0, newDataArray = [];
 			for (i = 0; i < chartData.timeSequence.length; i++) {
 				if (null != chartData.apdexScores[i])	{
-	            	newData.push([chartData.timeSequence[i], chartData.apdexScores[i]]);
+                    var latest = chartData.timeSequence[i]
+                        + chartData.timeSequence[chartData.timeSequence.length-1]
+                        - chartData.timeSequence[chartData.timeSequence.length-2];
+                    var url = "#/timeline/1?application=" + application
+                        + "&task=" + task
+                        + "&earliest=" + chartData.timeSequence[i]
+                        + "&latest=" + latest
+                        + "&rtBelow=" + chartData.rttF * 10
+                        + "&rtAbove=" + 0;
+				    var newData = {};
+				    newData.x = chartData.timeSequence[i];
+				    newData.y = chartData.apdexScores[i];
+				    newData.url = url;
+                    newDataArray.push(newData);
 	        	}
 			}
-			singleTaskApdexTimechart.series[0].data = newData;
+			singleTaskApdexTimechart.series[0].data = newDataArray;
             rttUnit = chartData.rttUnit;
+            rttF = chartData.rttF;
             singleTaskApdexTimechart.series[0].name = 'APDEX [' + chartData.rttT + chartData.rttUnit + ']';
 			// console.log(singleTaskApdexTimechart);
+//			 console.log(JSON.stringify(singleTaskApdexTimechart));
             return singleTaskApdexTimechart;
         },
 
@@ -566,23 +608,48 @@ tracyChartService.factory('tracyCharts', function(){
 
         getSingleTaskVitalsTimechart: function(application, task, chartData){
         	// console.log(chartData);
-            var i = 0, countData = [], errorCountData = [], p95Data = [], maxData = [];
+            var i = 0, countDataArray = [], errorCountDataArray = [], p95DataArray = [], maxDataArray = [];
             var totalErrorCount=0, maxSnapCount=0;
             var twsSupportsMax = chartData.hasOwnProperty('max');
 			for (i = 0; i < chartData.timeSequence.length; i++) {
+                // Establish latest
+                var latest = chartData.timeSequence[i]
+                    + chartData.timeSequence[chartData.timeSequence.length-1]
+                    - chartData.timeSequence[chartData.timeSequence.length-2];
+
+                var url = "#/timeline/1?application=" + application
+                    + "&task=" + task
+                    + "&earliest=" + chartData.timeSequence[i]
+                    + "&latest=" + latest
+                    + "&rtBelow=" + rttF * 10
+                    + "&rtAbove=" + 0;
+
+                var countData = {}, errorCountData = {}, p95Data = {}, maxData = {};
 				if (null != chartData.count[i])	{
-	            	countData.push([chartData.timeSequence[i], chartData.count[i]]);
+				    countData.x = chartData.timeSequence[i];
+				    countData.y = chartData.count[i];
+				    countData.url = url;
+	            	countDataArray.push(countData)
                     maxSnapCount = Math.max(maxSnapCount, chartData.count[i]);
 	        	}
 				if (null != chartData.errors[i])	{
-	            	errorCountData.push([chartData.timeSequence[i], chartData.errors[i]]);
+				    errorCountData.x = chartData.timeSequence[i];
+				    errorCountData.y = chartData.errors[i];
+				    errorCountData.url = url;
+	            	errorCountDataArray.push(errorCountData);
                     totalErrorCount = totalErrorCount + chartData.errors[i];
 	        	}
 				if (null != chartData.p95[i])	{
-	            	p95Data.push([chartData.timeSequence[i], chartData.p95[i]]);
+				    p95Data.x = chartData.timeSequence[i];
+				    p95Data.y = chartData.p95[i];
+				    p95Data.url = url;
+	            	p95DataArray.push(p95Data);
 	        	}
                 if (twsSupportsMax && null != chartData.max[i])   {
-                    maxData.push([chartData.timeSequence[i], chartData.max[i]]);
+				    maxData.x = chartData.timeSequence[i];
+				    maxData.y = chartData.max[i];
+				    maxData.url = url;
+                    maxDataArray.push(maxData);
                 }
                 else {
                     singleTaskVitalsTemplate.series[3].data = {};
@@ -591,19 +658,20 @@ tracyChartService.factory('tracyCharts', function(){
 			}
             // console.log(singleTaskVitalsTemplate);
             singleTaskVitalsTemplate.yAxis[0].title.text = 'Response time (' + rttUnit+ ')',
-			singleTaskVitalsTemplate.series[0].data = countData;
+			singleTaskVitalsTemplate.series[0].data = countDataArray;
             singleTaskVitalsTemplate.series[0].visible = (maxSnapCount == 1 ?  false : true);
-			singleTaskVitalsTemplate.series[1].data = errorCountData;
+			singleTaskVitalsTemplate.series[1].data = errorCountDataArray;
             singleTaskVitalsTemplate.series[1].visible = (totalErrorCount == 0 ?  false : true);
-			singleTaskVitalsTemplate.series[2].data = p95Data;
+			singleTaskVitalsTemplate.series[2].data = p95DataArray;
             singleTaskVitalsTemplate.series[2].visible = (maxSnapCount == 1 ?  false : true);
             if (twsSupportsMax) {
-                singleTaskVitalsTemplate.series[3].data = maxData;
+                singleTaskVitalsTemplate.series[3].data = maxDataArray;
                 singleTaskVitalsTemplate.series[3].visible = (maxSnapCount == 1 ?  true : false);
             }
 
-			// console.log(singleTaskVitalsTemplate);
-			// console.log(JSON.stringify(singleTaskVitalsTemplate));
+
+//			 console.log(singleTaskVitalsTemplate);
+//			 console.log(JSON.stringify(singleTaskVitalsTemplate));
             return singleTaskVitalsTemplate;
         },
 
@@ -640,12 +708,15 @@ tracyChartService.factory('tracyCharts', function(){
                     // TODO: latencyHistogram to be extended to supply earliest and latests.
                     // Should not be relying on a another chart to obtain these
                     var timesequenceArraySize = singleTaskVitalsTemplate.series[0].data.length;
-                    var earliest = singleTaskVitalsTemplate.series[0].data[0][0];
-                    var latest = singleTaskVitalsTemplate.series[0].data[timesequenceArraySize-1][0];
+                    var earliest = singleTaskVitalsTemplate.series[0].data[0].x;
+                    var latestMinus1 = singleTaskVitalsTemplate.series[0].data[timesequenceArraySize-2].x;
+                    var latest = singleTaskVitalsTemplate.series[0].data[timesequenceArraySize-1].x;
+                    var latestPlus1 = latest + latest - latestMinus1;
+                    // http://api.highcharts.com/highcharts#plotOptions.area.point.events.click
                     var url = "#/timeline/1?application=" + application
                         + "&task=" + task
                         + "&earliest=" + earliest
-                        + "&latest=" + latest
+                        + "&latest=" + latestPlus1
                         + "&rtBelow=" + binBoundary[1]
                         + "&rtAbove=" + binBoundary[0]
                     countAndColor.url = url;
@@ -655,8 +726,8 @@ tracyChartService.factory('tracyCharts', function(){
 			singleTaskHistogramTemplate.xAxis.categories = binsData;
             singleTaskHistogramTemplate.xAxis.title.text = 'Response time range [' + rttUnit + ']',
 			singleTaskHistogramTemplate.series[0].data = countAndColourData;
-			// console.log(singleTaskHistogramTemplate);
-			// console.log(JSON.stringify(singleTaskHistogramTemplate));
+//			 console.log(singleTaskHistogramTemplate);
+//			 console.log(JSON.stringify(singleTaskHistogramTemplate));
             return singleTaskHistogramTemplate;
         }  
     }               
