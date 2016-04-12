@@ -296,16 +296,16 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
     	}
     	// less than 1 minute
     	if (msec > secsInMs && msec < minInMs)	{
-    		seconds = Math.round(msec/secsInMs);
-    		secondsRem = msec%secsInMs
+    		seconds = Math.floor(msec/secsInMs);
+    		secondsRem = msec % secsInMs
     		milliseconds = secondsRem;
     		time = seconds + "s" + " " + milliseconds + "ms";
     	}
     	// less than 1 hour
     	if (msec >= minInMs && msec < hoursInMs)	{
-    		minutes = Math.round(msec / minInMs);
-    		minutesRem= msec % minInMs;
-    		seconds = Math.round(minutesRem/secsInMs);
+    		minutes = Math.floor(msec / minInMs);
+    		minutesRem = msec % minInMs;
+    		seconds = Math.floor(minutesRem/secsInMs);
     		secondsRem = minutesRem%secsInMs;
     		milliseconds = secondsRem;
     		time = 
@@ -314,20 +314,20 @@ tracyTaskGraphService.factory('tracyTaskGraph', function() {
      }
     	// less than 1 day
     	if (msec >= hoursInMs && msec < dayInMs)	{
-    		hours = Math.round(msec / hoursInMs);
+    		hours = Math.floor(msec / hoursInMs);
     		hoursRem = msec % hoursInMs;
-    		minutes = Math.round(hoursRem / minInMs);
+    		minutes = Math.floor(hoursRem / minInMs);
     		time = 
        hours + "h"
        + " " + minutes + "m";
      }
       // more than 1 day
       if (msec > dayInMs)  {
-        days = Math.round(msec / dayInMs);
+        days = Math.floor(msec / dayInMs);
         daysRem = msec % dayInMs;
-        hours = Math.round(daysRem / hoursInMs);
+        hours = Math.floor(daysRem / hoursInMs);
         hoursRem = daysRem % hoursInMs;
-        minutes = Math.round(hoursRem / minInMs);
+        minutes = Math.floor(hoursRem / minInMs);
         time = 
         days + "d"
         + " " + hours + "h"
